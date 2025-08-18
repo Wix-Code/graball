@@ -1,0 +1,52 @@
+{
+  "compilerOptions": {
+    // File Layout
+    "rootDir": "./",
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["./*"],
+      "@/config/*": ["./config/*"],
+      "@/controllers/*": ["./controllers/*"],
+      "@/middlewares/*": ["./middlewares/*"],
+      "@/routes/*": ["./routes/*"]
+    },
+
+    // Environment Settings
+    "module": "ESNext",
+    "target": "ES2022",
+    "moduleResolution": "node",
+    "types": ["node"],
+
+    // Other Outputs
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+
+    // Recommended Options
+    "strict": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    
+    // Remove problematic options for Node.js backend
+    // "noEmit": true, // This prevents compilation!
+    // "allowImportingTsExtensions": true, // This breaks Node.js
+    // "verbatimModuleSyntax": true, // Can cause issues
+    // "jsx": "react-jsx", // Not needed for backend
+    // "exactOptionalPropertyTypes": true, // Too strict for many libraries
+    // "noUncheckedIndexedAccess": true, // Too strict for many libraries
+    // "noUncheckedSideEffectImports": true // Can break imports
+  },
+  "include": [
+    "**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

@@ -20,7 +20,7 @@ interface LoginRequestBody {
 export const registerUser = async (req: Request, res: Response) => {
   try {
     // Explicitly type the destructuring to avoid conflicts
-    const { firstName, lastName, email, password, role = 'CUSTOMER' } = req.body as RegisterRequestBody;
+    const { firstName, lastName, email, password, role } = req.body as RegisterRequestBody;
 
     // Validate required fields
     if (!email || !password) {

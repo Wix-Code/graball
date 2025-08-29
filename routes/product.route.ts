@@ -7,10 +7,13 @@ import {
   getProductsByStore,
   updateProduct,
   deleteProduct,
-  getProductById
+  getProductById,
+  getAllProducts
 } from '../controllers/product.controller.js';
+import { authenticateToken } from '@/middlewares/auth.middleware.js';
 
-router.post('/', addProduct);
+router.post('/',authenticateToken, addProduct);
+router.post('/', getAllProducts);
 router.get('/store/:storeId', getProductsByStore);
 router.get('/:id', getProductById);
 router.put('/:id', updateProduct);

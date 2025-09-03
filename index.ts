@@ -4,6 +4,7 @@ import cors from "cors"
 import authRoutes from './routes/auth.route.js';
 import productRoutes from './routes/product.route.js';
 import storeRoutes from './routes/store.route.js';
+import categoryRoutes from './routes/category.route.js';
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ app.use(cors());
 app.use('/api/auth', authRoutes);
 app.use('/api/product', productRoutes);
 app.use('/api/store', storeRoutes);
+app.use('/api/category', categoryRoutes);
 
 app.get('/', (req, res) => {
   res.send('Hello World!');

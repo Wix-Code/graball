@@ -140,7 +140,7 @@ export const loginUser = async (req: Request, res: Response) => {
 
 export const getUserProfile = async (req: Request, res: Response) => {
   try {
-    const userId = req.user?.id; // Assuming req.user is set by the authentication middleware
+    const userId = req.user?.id;
 
     if (!userId) {
       return res.status(401).json({ error: "Authentication required" });
@@ -162,7 +162,8 @@ export const getUserProfile = async (req: Request, res: Response) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    res.status(200).json(user);
+    res.status(200).json({ status: true, message: "User fetched successfully", user: user });
+    
   } catch (error) {
     console.error('Get user profile error:', error);
     res.status(500).json({ error: "Internal server error" });
@@ -171,7 +172,7 @@ export const getUserProfile = async (req: Request, res: Response) => {
 
 export const updateUserProfile = async (req: Request, res: Response) => {
   try {
-    const userId = req.user?.id; // Assuming req.user is set by the authentication middleware
+    const userId = req.user?.id;
     const { firstName, lastName, email } = req.body;
 
     if (!userId) {
@@ -195,7 +196,7 @@ export const updateUserProfile = async (req: Request, res: Response) => {
       }
     });
 
-    res.status(200).json(updatedUser);
+    res.status(200).json({ status: true, message: "User updated successfully", updatedUser: updatedUser });
   } catch (error) {
     console.error('Update user profile error:', error);
     res.status(500).json({ error: "Internal server error" });
@@ -204,7 +205,7 @@ export const updateUserProfile = async (req: Request, res: Response) => {
 
 export const deleteUser = async (req: Request, res: Response) => {
   try {
-    const userId = req.user?.id; // Assuming req.user is set by the authentication middleware
+    const userId = req.user?.id;
 
     if (!userId) {
       return res.status(401).json({ error: "Authentication required" });
@@ -217,6 +218,25 @@ export const deleteUser = async (req: Request, res: Response) => {
     res.status(204).send();
   } catch (error) {
     console.error('Delete user error:', error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const getAllUsers = async (req: Request, res: Response) => {
+  try {
+    const users = await prisma.user.findMany({
+      include: {
+        stores: true, 
+      },
+    });
+
+    res.status(200).json({
+      status: true,
+      message: "Users fetched successfully",
+      users,
+    });
+  } catch (error) {
+    console.error("Get all users error:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };

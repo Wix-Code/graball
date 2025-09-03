@@ -98,14 +98,21 @@ export const getStoreById = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     const store = await prisma.store.findUnique({
-      where: { id: Number(id) }
+      where: { id: Number(id) },
+      include: {
+        products: true,
+      },
     });
 
     if (!store) {
-      return res.status(404).json({ error: "store not found" });
+      return res.status(404).json({ error: "Store not found" });
     }
 
-    res.status(200).json({ status: false, message: "Store fetched successfully", store: store });
+    res.status(200).json({ 
+      status: true, 
+      message: "Store fetched successfully", 
+      store 
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
@@ -116,7 +123,7 @@ export const getAllStores = async (req: Request, res: Response) => {
   try {
     const stores = await prisma.store.findMany({
       include: {
-        products: true, // 👈 include related products
+        products: true,
       },
     });
 

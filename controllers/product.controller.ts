@@ -3,7 +3,7 @@ import type { Request, Response } from "express";
 
 export const addProduct = async (req: Request, res: Response) => {
   try {
-    const { name, description, price, imageUrl, storeId } = req.body;
+    const { name, description, price, imageUrl, storeId, category } = req.body;
     const userId = req.user?.id;
 
     if (!userId) {
@@ -32,7 +32,8 @@ export const addProduct = async (req: Request, res: Response) => {
         name,
         description,
         price: Number(price),
-       // imageUrl,
+        // imageUrl,
+        category,
         store: {
           connect: { id: parsedStoreId },
         },
@@ -64,15 +65,32 @@ export const getProductsByStore = async (req: Request, res: Response) => {
 export const updateProduct = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { name, description, price, imageUrl } = req.body;
+    const { name, description, price, imageUrl, category } = req.body;
 
+    // Find the category by name (or create if it doesn’t exist)
+    let existingCategory = await prisma.category.findUnique({
+      where: { name: category },
+    });
+
+    if (!existingCategory) {
+      existingCategory = await prisma.category.create({
+        data: { name: category },
+      });
+    }
+
+    // Update product
     const product = await prisma.product.update({
-      where: { id: Number(id) },
+      where: { id: Number(id) }, // product must exist
       data: {
         name,
         description,
-        price
-      }
+        price,
+        //imageUrl,
+        category: {
+          connect: { id: existingCategory.id },
+        },
+      },
+      include: { category: true }, // return the category too
     });
 
     res.status(200).json(product);
@@ -128,6 +146,86 @@ export const getAllProducts = async (req: Request, res: Response) => {
     res.status(200).json(product);
   } catch (error) {
     console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const getProductsByCategory = async (req: Request, res: Response) => {
+  try {
+    const { categoryId, categoryName, page = "1", limit = "10", search } = req.query;
+
+    if (!categoryId && !categoryName) {
+      return res.status(400).json({ error: "Provide either categoryId or categoryName" });
+    }
+
+    const pageNumber = parseInt(page as string, 10);
+    const pageSize = parseInt(limit as string, 10);
+    const skip = (pageNumber - 1) * pageSize;
+
+    // Build base query
+    let whereClause: any = {};
+
+    if (categoryId) {
+      whereClause = {
+        categories: {
+          some: {
+            categoryId: Number(categoryId),
+          },
+        },
+      };
+    }
+
+    if (categoryName) {
+      whereClause = {
+        categories: {
+          some: {
+            category: {
+              name: String(categoryName),
+            },
+          },
+        },
+      };
+    }
+
+    // Add search filter (by name or description)
+    if (search) {
+      whereClause = {
+        ...whereClause,
+        OR: [
+          { name: { contains: String(search), mode: "insensitive" } },
+          { description: { contains: String(search), mode: "insensitive" } },
+        ],
+      };
+    }
+
+    // Fetch products
+    const [products, total] = await Promise.all([
+      prisma.product.findMany({
+        where: whereClause,
+        skip,
+        take: pageSize,
+        orderBy: { createdAt: "desc" },
+        include: {
+          category: true,
+          store: true, // in case you want store details too
+        },
+      }),
+      prisma.product.count({ where: whereClause }),
+    ]);
+
+    res.status(200).json({
+      status: true,
+      message: "Products fetched successfully",
+      pagination: {
+        total,
+        page: pageNumber,
+        limit: pageSize,
+        totalPages: Math.ceil(total / pageSize),
+      },
+      products,
+    });
+  } catch (error) {
+    console.error("Get products by category error:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };

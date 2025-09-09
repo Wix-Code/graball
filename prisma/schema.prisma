@@ -9,70 +9,105 @@ datasource db {
 }
 
 model User {
-  id             Int       @id @default(autoincrement())
-  email          String    @unique
-  firstName      String?
-  lastName       String?
-  password       String
-  role           UserRole  @default(CUSTOMER) // CUSTOMER, VENDOR, ADMIN
-  stores         Store[]   @relation("UserStores") // Only for VENDOR role
-  orders         Order[]
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  id               Int             @id @default(autoincrement())
+  email            String          @unique
+  firstName        String?
+  lastName         String?
+  password         String
+  role             UserRole        @default(CUSTOMER) // CUSTOMER, VENDOR, ADMIN
+  stores           Store[]         @relation("UserStores")
+  notifications    Notification[]
+  messagesSent     Message[]       @relation("SentMessages")
+  messagesReceived Message[]       @relation("ReceivedMessages")
+  savedProducts    SavedProduct[]
+  conversationsAsBuyer  Conversation[] @relation("BuyerConversations")
+  conversationsAsSeller Conversation[] @relation("SellerConversations")
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
 }
 
 model Store {
-  id        Int       @id @default(autoincrement())
-  name      String    @unique
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
   description String?
-  imageUrl  String?
-  location  String?
-  ownerId   Int
-  owner     User      @relation("UserStores", fields: [ownerId], references: [id])
-  products  Product[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  imageUrl    String?
+  location    String?
+  ownerId     Int
+  owner       User      @relation("UserStores", fields: [ownerId], references: [id])
+  products    Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 
 model Product {
-  id           Int               @id @default(autoincrement())
+  id           Int            @id @default(autoincrement())
   name         String
   description  String?
   price        Float
   storeId      Int
   imageUrl     String?
-  store        Store              @relation(fields: [storeId], references: [id])
+  store        Store          @relation(fields: [storeId], references: [id])
   categoryId   Int?
-  category     Category?  @relation(fields: [categoryId], references: [id])
-  createdAt    DateTime           @default(now())
-  updatedAt    DateTime           @updatedAt
+  category     Category?      @relation(fields: [categoryId], references: [id])
+  savedBy      SavedProduct[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
 }
 
 model Category {
-  id           Int               @id @default(autoincrement())
-  name         String             @unique
+  id           Int          @id @default(autoincrement())
+  name         String        @unique
   products     Product[]
-  createdAt    DateTime           @default(now())
-  updatedAt    DateTime           @updatedAt
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
 }
 
-// model ProductCategory {
-//   productId   Int
-//   categoryId  Int
-//   product     Product   @relation(fields: [productId], references: [id])
-//   category    Category  @relation(fields: [categoryId], references: [id])
+model Notification {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  user      User      @relation(fields: [userId], references: [id])
+  title     String
+  message   String
+  type      NotificationType
+  isRead    Boolean   @default(false)
+  createdAt DateTime  @default(now())
+}
 
-//   @@id([productId, categoryId])
-// }
+model Conversation {
+  id        Int        @id @default(autoincrement())
+  buyerId   Int
+  sellerId  Int
+  buyer     User       @relation("BuyerConversations", fields: [buyerId], references: [id])
+  seller    User       @relation("SellerConversations", fields: [sellerId], references: [id])
+  messages  Message[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 
-model Order {
-  id         Int       @id @default(autoincrement())
+  @@unique([buyerId, sellerId]) // prevent duplicate conversations
+}
+
+model Message {
+  id             Int        @id @default(autoincrement())
+  conversationId Int
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
+  senderId       Int
+  receiverId     Int
+  sender         User       @relation("SentMessages", fields: [senderId], references: [id])
+  receiver       User       @relation("ReceivedMessages", fields: [receiverId], references: [id])
+  content        String
+  status         MessageStatus @default(SENT)
+  createdAt      DateTime   @default(now())
+}
+
+model SavedProduct {
+  id         Int      @id @default(autoincrement())
   userId     Int
-  total      Float
-  status     OrderStatus @default(PENDING)
-  user       User      @relation(fields: [userId], references: [id])
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+  productId  Int
+  user       User     @relation(fields: [userId], references: [id])
+  product    Product  @relation(fields: [productId], references: [id])
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, productId]) // prevent duplicates
 }
 
 enum UserRole {
@@ -87,4 +122,17 @@ enum OrderStatus {
   SHIPPED
   COMPLETED
   CANCELED
+}
+
+enum NotificationType {
+  SYSTEM
+  MESSAGE
+  PROMOTION
+  ORDER
+}
+
+enum MessageStatus {
+  SENT
+  DELIVERED
+  READ
 }

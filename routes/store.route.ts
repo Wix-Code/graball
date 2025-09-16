@@ -7,7 +7,7 @@ import { authenticateToken, requireVendor } from "@/middlewares/auth.middleware"
 
 router.post('/', authenticateToken, addStore);
 router.get('/', getAllStores);
-router.post('/:id', getStoreById);
+router.get('/:slug', getStoreById);
 router.post('/update-store/:id', authenticateToken, updateStore);
 router.post('/delete-store', deleteStore);
 

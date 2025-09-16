@@ -1,10 +1,17 @@
-import express from 'express';
+import { Router } from "express";
 
-const router = express.Router();
+export default function messageRoutes(io: any) {
+  const router = Router();
 
-import { authenticateToken } from '@/middlewares/auth.middleware.js';
-import { sendMessage } from '@/controllers/message.controller';
+  // define your routes here
+  router.post("/", (req, res) => {
+    const { message } = req.body;
 
-router.post('/', sendMessage);
+    // do something with socket.io
+    io.emit("newMessage", message);
 
-export default router;
+    res.json({ success: true });
+  });
+
+  return router; // 👈 return router, not middleware
+}

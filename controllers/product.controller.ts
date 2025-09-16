@@ -32,7 +32,7 @@ export const addProduct = async (req: Request, res: Response) => {
         name,
         description,
         price: Number(price),
-        // imageUrl,
+        imageUrl,
         category,
         store: {
           connect: { id: parsedStoreId },
@@ -55,10 +55,10 @@ export const getProductsByStore = async (req: Request, res: Response) => {
       where: { storeId: Number(storeId) }
     });
 
-    res.status(200).json(products);
+    res.status(200).json({ status: true, message: "Products fetched successfully", products: products });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ status: false, error: "Internal server error" });
   }
 };
 
@@ -85,7 +85,7 @@ export const updateProduct = async (req: Request, res: Response) => {
         name,
         description,
         price,
-        //imageUrl,
+        imageUrl,
         category: {
           connect: { id: existingCategory.id },
         },
@@ -93,10 +93,10 @@ export const updateProduct = async (req: Request, res: Response) => {
       include: { category: true }, // return the category too
     });
 
-    res.status(200).json(product);
+    res.status(200).json({ status: true, message: "Product fetched successfully", product: product });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ status: false, error: "Internal server error" });
   }
 };
 
@@ -108,45 +108,119 @@ export const deleteProduct = async (req: Request, res: Response) => {
       where: { id: Number(id) }
     });
 
-    res.status(204).send();
+    res.status(204).json({ status: true, message: "Product deleted successfully" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ status: false, error: "Internal server error" });
   }
 };
 
 export const getProductById = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const { slug } = req.params;
+
+    if (!slug) {
+      return res.status(400).json({ status: false, error: "Product slug is required" });
+    }
+
+    // Handle both cases: "2" or "2-red-palm-oil"
+    const productId = Number(slug.split("-")[0]);
+
+    if (isNaN(productId)) {
+      return res.status(400).json({ status: false, error: "Invalid product ID" });
+    }
 
     const product = await prisma.product.findUnique({
-      where: { id: Number(id) }
+      where: { id: productId },
+      include: { store: true },
     });
 
     if (!product) {
-      return res.status(404).json({ error: "Product not found" });
+      return res.status(404).json({ status: false, error: "Product not found" });
     }
 
-    res.status(200).json(product);
+    res.status(200).json({
+      status: true,
+      message: "Product fetched successfully",
+      product,
+    });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ status: false, error: "Internal server error" });
   }
 };
 
 export const getAllProducts = async (req: Request, res: Response) => {
   try {
-  
-    const product = await prisma.product.findMany({});
+    // query params
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const search = (req.query.search as string) || "";
+    const sort = (req.query.sort as string) || "newest"; // newest | oldest | highest | lowest
+    const location = (req.query.location as string) || "";
 
-    if (!product) {
-      return res.status(404).json({ error: "Product not found" });
+    const skip = (page - 1) * limit;
+
+    // where conditions
+    const where: any = {};
+
+    if (search) {
+      where.name = {
+        contains: search,
+        mode: "insensitive",
+      };
     }
 
-    res.status(200).json(product);
+    if (location) {
+      where.location = location; // adjust to match your DB schema
+    }
+
+    // sorting options
+    let orderBy: any = { createdAt: "desc" }; // default: newest
+
+    switch (sort) {
+      case "oldest":
+        orderBy = { createdAt: "asc" };
+        break;
+      case "highest":
+        orderBy = { price: "desc" };
+        break;
+      case "lowest":
+        orderBy = { price: "asc" };
+        break;
+      default:
+        orderBy = { createdAt: "desc" }; // newest
+    }
+
+    // fetch data + total count
+    const [products, total] = await Promise.all([
+      prisma.product.findMany({
+        where,
+        orderBy,
+        skip,
+        take: limit,
+      }),
+      prisma.product.count({ where }),
+    ]);
+
+    res.status(200).json({
+      status: true,
+      message: "Products fetched successfully",
+      data: {
+        products,
+        pagination: {
+          total,
+          page,
+          limit,
+          totalPages: Math.ceil(total / limit),
+          hasNextPage: page * limit < total,
+          hasPrevPage: page > 1,
+        },
+      },
+    });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error("Error fetching products:", error);
+    res.status(500).json({ status: false, error: "Internal server error" });
   }
 };
 

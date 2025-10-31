@@ -109,7 +109,7 @@ export const getCategoryById = async (req: Request, res: Response) => {
 
     res.status(200).json({ 
       status: true, 
-      message: "Store fetched successfully", 
+      message: "Single category fetched successfully", 
       category: category
     });
   } catch (error) {
@@ -122,19 +122,13 @@ export const getAllCategories = async (req: Request, res: Response) => {
   try {
     const categories = await prisma.category.findMany({
       include: {
-        _count: {
-          select: { products: true },
-        },
+         products: true 
       },
     });
 
     res.status(200).json({
       status: true,
-      categories: categories.map(cat => ({
-        id: cat.id,
-        name: cat.name,
-        productCount: cat._count.products,
-      })),
+      categories: categories,
     });
   } catch (error) {
     console.error(error);

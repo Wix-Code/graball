@@ -154,7 +154,8 @@ export const getUserProfile = async (req: Request, res: Response) => {
         firstName: true,
         lastName: true,
         role: true,
-        createdAt: true
+        createdAt: true,
+        stores: true
       }
     });
 

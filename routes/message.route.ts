@@ -1,17 +1,24 @@
 import { Router } from "express";
+import { 
+  sendMessage, 
+  getOrCreateConversation,
+  getUserConversations,
+  markMessagesAsRead,
+  getMessages
+} from "@/controllers/message.controller";
+import { Server } from "socket.io";
 
-export default function messageRoutes(io: any) {
+export default function messageRoutes(io: Server) {
   const router = Router();
 
-  // define your routes here
-  router.post("/", (req, res) => {
-    const { message } = req.body;
+  // Message routes
+  router.post("/", sendMessage(io));
+  router.get("/", getMessages);
+  router.put("/read", markMessagesAsRead);
 
-    // do something with socket.io
-    io.emit("newMessage", message);
+  // Conversation routes
+  router.post("/conversations", getOrCreateConversation);
+  router.get("/conversations/:userId", getUserConversations);
 
-    res.json({ success: true });
-  });
-
-  return router; // 👈 return router, not middleware
+  return router;
 }

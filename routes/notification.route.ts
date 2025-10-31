@@ -1,12 +1,34 @@
 import { Router } from "express";
-import { sendMessage, getMessages } from "@/controllers/message.controller";
 import { Server } from "socket.io";
+import {
+  sendNotification,
+  getUserNotifications,
+  markNotificationAsRead,
+  markAllNotificationsAsRead,
+  deleteNotification,
+  getUnreadCount,
+} from "@/controllers/notification.controller";
 
 export default (io: Server) => {
   const router = Router();
 
-  router.post("/", sendMessage(io)); // now works ✅
-  router.get("/", getMessages);
+  // Send notification (with io for real-time)
+  router.post("/", sendNotification(io));
+
+  // Get all notifications for a user
+  router.get("/user/:userId", getUserNotifications);
+
+  // Get unread count
+  router.get("/user/:userId/unread-count", getUnreadCount);
+
+  // Mark single notification as read
+  router.put("/:notificationId/read", markNotificationAsRead);
+
+  // Mark all notifications as read for a user
+  router.put("/user/:userId/read-all", markAllNotificationsAsRead);
+
+  // Delete a notification
+  router.delete("/:notificationId", deleteNotification);
 
   return router;
 };

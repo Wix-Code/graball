@@ -52,7 +52,6 @@ const userSocketMap = new Map<number, string>(); // userId → socketId
 io.on("connection", (socket) => {
   console.log("⚡ User connected:", socket.id);
 
-  // Client should emit an event like { userId: 12 } to identify itself
   socket.on("register", (userId: number) => {
     if (userId) {
       userSocketMap.set(userId, socket.id);
@@ -60,7 +59,25 @@ io.on("connection", (socket) => {
     }
   });
 
-  // Handle disconnection
+  socket.on("join-conversation", (conversationId: number) => {
+    socket.join(`conversation_${conversationId}`);
+    console.log(`👥 Socket ${socket.id} joined conversation_${conversationId}`);
+  });
+
+  socket.on("leave-conversation", (conversationId: number) => {
+    socket.leave(`conversation_${conversationId}`);
+    console.log(`👋 Socket ${socket.id} left conversation_${conversationId}`);
+  });
+
+  // ✅ Handle typing indicator
+  socket.on("typing", ({ conversationId, userId }) => {
+    socket.to(`conversation_${conversationId}`).emit("userTyping", { userId });
+  });
+
+  socket.on("stop-typing", ({ conversationId, userId }) => {
+    socket.to(`conversation_${conversationId}`).emit("userStoppedTyping", { userId });
+  });
+
   socket.on("disconnect", () => {
     console.log("❌ User disconnected:", socket.id);
     for (const [userId, sockId] of userSocketMap.entries()) {

@@ -43,31 +43,41 @@ export const addStore = async (req: Request, res: Response) => {
 
 export const updateStore = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
     const { name, description, location, imageUrl } = req.body;
     const userId = req.user?.id;
-
-    console.log(userId, "user id")
 
     if (!userId) {
       return res.status(400).json({ error: "User not authenticated" });
     }
 
+    // Find the user's store
+    const existingStore = await prisma.store.findFirst({
+      where: { ownerId: userId },
+    });
+
+    if (!existingStore) {
+      return res.status(404).json({ error: "No store found for this user" });
+    }
+
+    // Update the store
     const store = await prisma.store.update({
-      where: { id: Number(id) },
+      where: { id: existingStore.id },
       data: {
         name,
         description,
         imageUrl,
-        location
-      }
+        location,
+      },
     });
 
-    res.status(200).json({status: false, message: "Store updated successfully", store: store});
-
+    return res.status(200).json({
+      status: true,
+      message: "Store updated successfully",
+      store,
+    });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
 
@@ -197,6 +207,28 @@ export const getAllStores = async (req: Request, res: Response) => {
         },
       },
     });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const getMyStore = async (req: Request, res: Response) => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) {
+      return res.status(401).json({ error: "User not authenticated" });
+    }
+
+    const store = await prisma.store.findFirst({
+      where: { ownerId: userId },
+    });
+
+    if (!store) {
+      return res.status(404).json({ message: "No store found for this user" });
+    }
+
+    res.status(200).json({ status: true, store });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });

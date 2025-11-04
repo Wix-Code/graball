@@ -22,10 +22,10 @@ export default (io: Server) => {
   router.get("/user/:userId/unread-count", getUnreadCount);
 
   // Mark single notification as read
-  router.put("/:notificationId/read", markNotificationAsRead);
+  router.post("/:notificationId/read", markNotificationAsRead);
 
   // Mark all notifications as read for a user
-  router.put("/user/:userId/read-all", markAllNotificationsAsRead);
+  router.post("/user/:userId/read-all", markAllNotificationsAsRead);
 
   // Delete a notification
   router.delete("/:notificationId", deleteNotification);

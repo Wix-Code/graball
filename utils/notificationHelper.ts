@@ -4,7 +4,6 @@ import { Server } from "socket.io";
 import { userSocketMap } from "../index.js";
 import { NotificationType } from "@/generated/prisma/index.js";
 
-
 export const createAndSendNotification = async (
   io: Server,
   userId: number,
@@ -20,6 +19,16 @@ export const createAndSendNotification = async (
         message,
         type,
       },
+      include: {
+        user: {
+          select: {
+            id: true,
+            email: true,
+            firstName: true,
+            lastName: true,
+          }
+        }
+      }
     });
 
     // Emit to user if online
@@ -27,6 +36,8 @@ export const createAndSendNotification = async (
     if (socketId) {
       io.to(socketId).emit("notification", notification);
       console.log(`📨 Auto-notification sent to user ${userId}`);
+    } else {
+      console.log(`📭 User ${userId} is offline, notification saved to DB`);
     }
 
     return notification;
@@ -34,4 +45,123 @@ export const createAndSendNotification = async (
     console.error("Auto-notification error:", error);
     return null;
   }
+};
+
+// ✅ Specific notification helpers for better code organization
+
+export const notifyNewMessage = async (
+  io: Server,
+  receiverId: number,
+  senderName: string,
+  messagePreview: string
+) => {
+  const truncatedPreview = messagePreview.length > 50 
+    ? `${messagePreview.substring(0, 50)}...` 
+    : messagePreview;
+
+  return createAndSendNotification(
+    io,
+    receiverId,
+    "New Message",
+    `${senderName}: ${truncatedPreview}`,
+    "MESSAGE"
+  );
+};
+
+export const notifyNewOrder = async (
+  io: Server,
+  sellerId: number,
+  buyerName: string,
+  productName: string,
+  orderRef: string
+) => {
+  return createAndSendNotification(
+    io,
+    sellerId,
+    "New Order Received",
+    `${buyerName} ordered ${productName} (Order #${orderRef})`,
+    "ORDER"
+  );
+};
+
+export const notifyOrderStatusUpdate = async (
+  io: Server,
+  buyerId: number,
+  status: string,
+  orderRef: string
+) => {
+  return createAndSendNotification(
+    io,
+    buyerId,
+    "Order Update",
+    `Your order #${orderRef} is now ${status.toUpperCase()}`,
+    "ORDER"
+  );
+};
+
+export const notifyPromotion = async (
+  io: Server,
+  userId: number,
+  promotionTitle: string,
+  promotionMessage: string
+) => {
+  return createAndSendNotification(
+    io,
+    userId,
+    promotionTitle,
+    promotionMessage,
+    "PROMOTION"
+  );
+};
+
+export const notifySystemAlert = async (
+  io: Server,
+  userId: number,
+  alertTitle: string,
+  alertMessage: string
+) => {
+  return createAndSendNotification(
+    io,
+    userId,
+    alertTitle,
+    alertMessage,
+    "SYSTEM"
+  );
+};
+
+// ✅ Broadcast notification to multiple users
+export const broadcastNotification = async (
+  io: Server,
+  userIds: number[],
+  title: string,
+  message: string,
+  type: NotificationType
+) => {
+  try {
+    const notifications = await Promise.all(
+      userIds.map(userId => 
+        createAndSendNotification(io, userId, title, message, type)
+      )
+    );
+
+    console.log(`📣 Broadcast sent to ${userIds.length} users`);
+    return notifications;
+  } catch (error) {
+    console.error("Broadcast notification error:", error);
+    return null;
+  }
+};
+
+export const notifyUserFollow = async (
+  io: Server,
+  followedUserId: number, // the person being followed
+  followerName: string
+) => {
+  return createAndSendNotification(
+    io,
+    followedUserId,
+    "New Follower",
+    `${followerName} just followed you 🎉`,
+    "FOLLOW"
+  );
 };

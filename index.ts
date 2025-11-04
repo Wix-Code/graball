@@ -10,6 +10,7 @@ import storeRoutes from "./routes/store.route.js";
 import categoryRoutes from "./routes/category.route.js";
 import messageRoutes from "./routes/message.route.js";
 import notificationRoutes from "./routes/notification.route.js";
+import followRoutes from "./routes/follow.route.js";
 
 dotenv.config();
 
@@ -35,7 +36,8 @@ app.use("/api/products", productRoutes);
 app.use("/api/stores", storeRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/messages", messageRoutes(io)); // pass io into routes
-app.use("/api/notifications", notificationRoutes);
+app.use("/api/notifications", notificationRoutes(io));
+app.use("/api/follow", followRoutes(io));
 
 app.get("/", (req, res) => {
   res.send("✅ API is running...");

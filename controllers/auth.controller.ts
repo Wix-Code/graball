@@ -138,6 +138,17 @@ export const loginUser = async (req: Request, res: Response) => {
   }
 };
 
+export const logoutUser = async (req: Request, res: Response) => {
+  try {
+    // Nothing to do server-side since JWTs are stateless
+    res.status(200).json({ message: "Logout successful" });
+  } catch (error) {
+    console.error("Logout error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+
 export const getUserProfile = async (req: Request, res: Response) => {
   try {
     const userId = req.user?.id;

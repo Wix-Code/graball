@@ -3,12 +3,12 @@ import prisma from "@/config/prismaConnect";
 import { Server } from "socket.io";
 import { userSocketMap } from "..";
 import { MessageStatus } from "@/generated/prisma";
-import { createAndSendNotification } from "@/utils/notificationHelper";
+import { createAndSendNotification, notifyNewMessage } from "@/utils/notificationHelper";
 
 export const sendMessage = (io: Server) => {
   return async (req: Request, res: Response) => {
     try {
-      const { senderId, receiverId, content, conversationId } = req.body;
+      const { senderId, receiverId, content, conversationId, images } = req.body;
 
       if (!senderId || !receiverId || !content || !conversationId) {
         return res.status(400).json({ error: "Missing required fields" });
@@ -31,6 +31,7 @@ export const sendMessage = (io: Server) => {
             receiverId,
             conversationId,
             content,
+            images
           },
           include: {
             sender: {
@@ -52,10 +53,10 @@ export const sendMessage = (io: Server) => {
           }
         });
 
-        // Update conversation's lastMessageAt
+        // ✅ Update conversation's updatedAt (not createdAt)
         await tx.conversation.update({
           where: { id: conversationId },
-          data: { createdAt: new Date() }
+          data: { updatedAt: new Date() }
         });
 
         return message;
@@ -74,12 +75,16 @@ export const sendMessage = (io: Server) => {
         });
       }
 
-      await createAndSendNotification(
+      // ✅ Use the specific helper function
+      const senderName = result.sender.firstName 
+        ? `${result.sender.firstName} ${result.sender.lastName || ''}`.trim()
+        : result.sender.email;
+
+      await notifyNewMessage(
         io,
         receiverId,
-        "New Message",
-        `You have a new message from ${result.sender.firstName || "Someone"}`,
-        "MESSAGE"
+        senderName,
+        content
       );
 
       res.status(201).json({ 

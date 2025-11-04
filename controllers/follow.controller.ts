@@ -5,37 +5,64 @@ import { Server } from "socket.io";
 
 export const followUser = (io: Server) => async (req: Request, res: Response) => {
   try {
-    const { userId } = req.body; // user being followed
-    const followerId = req?.user?.id; // logged-in user
+    const followerId = req.user?.id; // logged-in user
+    const { userId } = req.body; // person being followed
 
     if (!followerId) {
-      return res.status(400).json({ error: "Unauthorized or missing user ID" });
+      return res.status(401).json({ error: "Unauthorized or missing user ID" });
     }
-    
-    // Create follow record
+
+    const followingId = Number(userId);
+    if (!followerId || !followingId || isNaN(followerId) || isNaN(followingId)) {
+      return res.status(400).json({ error: "Invalid follower or following user ID" });
+    }
+
+    if (!followingId) {
+      return res.status(400).json({ error: "Invalid following user ID" });
+    }
+
+    if (followerId === followingId) {
+      return res.status(400).json({ error: "You cannot follow yourself" });
+    }
+
+    // ✅ Check if already following
+    const existing = await prisma.follow.findUnique({
+      where: { followerId_followingId: { followerId, followingId } },
+    });
+
+    if (existing) {
+      return res.status(400).json({ error: "Already following this user" });
+    }
+
+    // ✅ Create follow record
     const follow = await prisma.follow.create({
       data: {
         followerId,
-        followingId: Number(userId),
+        followingId,
       },
     });
 
-    // Fetch follower name
+    // ✅ Get follower name for notification
     const follower = await prisma.user.findUnique({
       where: { id: followerId },
       select: { firstName: true, lastName: true },
     });
 
-    // Notify the followed user
-    const followerName = `${follower?.firstName} ${follower?.lastName}`;
-    await notifyUserFollow(req.app.get("io"), userId, followerName);
+    const followerName = `${follower?.firstName ?? ""} ${follower?.lastName ?? ""}`.trim() || "Someone";
 
-    res.status(201).json({ message: "Followed successfully", follow });
+    // ✅ Send follow notification
+    console.log("🔔 Sending follow notification to", followingId, "from", followerId);
+    await notifyUserFollow(io, followingId, followerName);
+    console.log("✅ Follow notification sent (or saved)");
+
+
+    res.status(201).json({status: true, message: "Followed successfully", data: follow });
   } catch (error) {
-    console.error("Follow error:", error);
+    console.error("❌ Follow error:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
 
 
 /**

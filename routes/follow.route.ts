@@ -6,12 +6,13 @@ import {
   getFollowing,
   followUser,
 } from "@/controllers/follow.controller";
+import { authenticateToken } from "@/middlewares/auth.middleware";
 
 export default (io: Server) => {
   const router = Router();
 
   // ✅ Follow a user
-  router.post("/follow-user", followUser(io));
+  router.post("/follow-user", authenticateToken, followUser(io));
 
   // ✅ Unfollow a user
   router.post("/unfollow-user", unFollow);

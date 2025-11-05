@@ -8,7 +8,7 @@ router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.post('/logout', loginUser);
 router.get('/users', getAllUsers);
-router.post('/user_profile', authenticateToken, getUserProfile);
+router.get('/user_profile', authenticateToken, getUserProfile);
 router.post('/update', authenticateToken, updateUserProfile);
 router.post('/delete', authenticateToken, requireAdmin, deleteUser);
 

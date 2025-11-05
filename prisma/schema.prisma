@@ -13,7 +13,11 @@ model User {
   email            String          @unique
   firstName        String?
   lastName         String?
+  address          String?
   image            String?
+  gender           String?
+  dob              String?
+  phone            Int?
   password         String
   role             UserRole        @default(CUSTOMER) // CUSTOMER, VENDOR, ADMIN
   stores           Store[]         @relation("UserStores")

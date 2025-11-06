@@ -10,6 +10,7 @@ interface RegisterRequestBody {
   phone?: number;
   email: string;
   password: string;
+  gender: string;
   role?: 'CUSTOMER' | 'VENDOR' | 'ADMIN';
 }
 
@@ -21,7 +22,7 @@ interface LoginRequestBody {
 export const registerUser = async (req: Request, res: Response) => {
   try {
     // Explicitly type the destructuring to avoid conflicts
-    const { firstName, lastName, email, password, phone, role } = req.body as RegisterRequestBody;
+    const { firstName, lastName, email, password, gender, phone, role } = req.body as RegisterRequestBody;
 
     // Validate required fields
     if (!email || !password) {
@@ -45,6 +46,7 @@ export const registerUser = async (req: Request, res: Response) => {
         firstName,
         lastName,
         email,
+        gender,
         phone,
         password: hashedPassword,
         role: role as 'CUSTOMER' | 'VENDOR' | 'ADMIN'
@@ -55,6 +57,7 @@ export const registerUser = async (req: Request, res: Response) => {
         firstName: true,
         lastName: true,
         phone: true,
+        gender: true,
         role: true,
         createdAt: true
       }
@@ -102,6 +105,7 @@ export const loginUser = async (req: Request, res: Response) => {
         lastName: true,
         password: true,
         phone: true,
+        gender: true,
         role: true
       }
     });
@@ -170,6 +174,7 @@ export const getUserProfile = async (req: Request, res: Response) => {
         lastName: true,
         role: true,
         createdAt: true,
+        gender: true,
         phone: true,
         stores: true
       }
@@ -210,7 +215,9 @@ export const updateUserProfile = async (req: Request, res: Response) => {
         lastName: true,
         role: true,
         phone: true,
-        createdAt: true
+        createdAt: true,
+        updatedAt: true,
+        gender: true
       }
     });
 

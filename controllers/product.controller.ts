@@ -62,6 +62,41 @@ export const getProductsByStore = async (req: Request, res: Response) => {
   }
 };
 
+export const getMyProducts = async (req: Request, res: Response) => {
+  try {
+    const userId = req?.user?.id;
+
+    if (!userId) {
+      return res.status(401).json({ status: false, message: "Authentication required" });
+    }
+
+    // ✅ Find the store that belongs to this user
+    const store = await prisma.store.findFirst({
+      where: { ownerId: userId },
+    });
+
+    if (!store) {
+      return res.status(404).json({ status: false, message: "You don't have a store yet" });
+    }
+
+    // ✅ Fetch all products under that store
+    const products = await prisma.product.findMany({
+      where: { storeId: store.id },
+      orderBy: { createdAt: "desc" },
+    });
+
+    return res.status(200).json({
+      status: true,
+      message: "Products fetched successfully",
+      products,
+    });
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ status: false, error: "Internal server error" });
+  }
+};
+
 export const updateProduct = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;

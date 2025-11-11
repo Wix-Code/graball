@@ -25,12 +25,26 @@ model User {
   messagesSent     Message[]       @relation("SentMessages")
   messagesReceived Message[]       @relation("ReceivedMessages")
   savedProducts    SavedProduct[]
+  subscription     Subscription[]
   conversationsAsBuyer  Conversation[] @relation("BuyerConversations")
   conversationsAsSeller Conversation[] @relation("SellerConversations")
   followers        Follow[]        @relation("UserFollowers")
   following        Follow[]        @relation("UserFollowing")
   createdAt        DateTime        @default(now())
   updatedAt        DateTime        @updatedAt
+}
+
+model Subscription {
+  id           Int      @id @default(autoincrement())
+  user         User     @relation(fields: [userId], references: [id])
+  userId       Int
+  planType     String   // "monthly" | "6months" | "yearly"
+  amount       Int
+  status       String   // "active" | "expired" | "pending"
+  reference    String   @unique
+  startDate    DateTime @default(now())
+  endDate      DateTime
+  createdAt    DateTime @default(now())
 }
 
 model Store {
@@ -52,7 +66,7 @@ model Product {
   description  String?
   price        Float
   storeId      Int
-  imageUrl     String?
+  imageUrl     String[]
   store        Store          @relation(fields: [storeId], references: [id])
   categoryId   Int?
   category     Category?      @relation(fields: [categoryId], references: [id])

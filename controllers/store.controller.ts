@@ -6,18 +6,29 @@ export const addStore = async (req: Request, res: Response) => {
     const { name, description, imageUrl, location } = req.body;
     const userId = req.user?.id;
 
-    console.log(userId, "user id")
-
     if (!userId) {
       return res.status(400).json({ error: "User not authenticated" });
     }
 
-    const existingStoreName = await prisma.store.findFirst({ where: { name: name } });
-    if (existingStoreName) {
-      return res.status(400).json({ error: "Store name already exit." });
+    // Check active subscription
+    const activeSub = await prisma.subscription.findFirst({
+      where: {
+        userId,
+        status: "active",
+        endDate: { gte: new Date() },
+      },
+    });
+
+    if (!activeSub) {
+      return res
+        .status(403)
+        .json({ error: "You must have an active subscription to create a store." });
     }
 
-    const existingStore = await prisma.store.findFirst({ where: { ownerId: userId } });
+    const existingStore = await prisma.store.findFirst({
+      where: { ownerId: userId },
+    });
+
     if (existingStore) {
       return res.status(400).json({ error: "You already have a store." });
     }
@@ -28,13 +39,11 @@ export const addStore = async (req: Request, res: Response) => {
         description,
         imageUrl,
         location,
-        owner: {
-          connect: { id: userId }, 
-        },
+        owner: { connect: { id: userId } },
       },
     });
 
-    res.status(201).json({status: false, message: "Store created successfully", store: store });
+    res.status(201).json({ message: "Store created successfully", store });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });

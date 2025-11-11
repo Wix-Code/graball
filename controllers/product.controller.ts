@@ -137,13 +137,34 @@ export const updateProduct = async (req: Request, res: Response) => {
 
 export const deleteProduct = async (req: Request, res: Response) => {
   try {
-    const userId = req?.user?.id;
+    const { id } = req.params; // get product ID from URL
+    const userId = req.user?.id; // authenticated user's ID
 
-    await prisma.product.delete({
-      where: { id: Number(userId) }
+    console.log(userId)
+
+    if (!id) {
+      return res.status(400).json({ status: false, message: "Product ID is required" });
+    }
+
+    if (!userId) {
+      return res.status(400).json({ status: false, message: "Not authenticated" });
+    }
+
+    // 🧱 Verify that product belongs to this user (optional but good for security)
+    const product = await prisma.product.findUnique({
+      where: { id: Number(id) },
     });
 
-    res.status(204).json({ status: true, message: "Product deleted successfully" });
+    if (!product) {
+      return res.status(404).json({ status: false, message: "Product not found" });
+    }
+
+    // 🗑 Delete product
+    await prisma.product.delete({
+      where: { id: Number(id) },
+    });
+
+    res.status(200).json({ status: true, message: "Product deleted successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ status: false, error: "Internal server error" });

@@ -18,7 +18,7 @@ router.get('/', getAllProducts);
 router.get('/my-products', authenticateToken, getMyProducts);
 router.get('/store/:storeId', getProductsByStore);
 router.get('/:slug', getProductById);
-router.put('/:id', updateProduct);
-router.delete('/:id', deleteProduct);
+router.put('/:id', authenticateToken, updateProduct);
+router.delete('/:id', authenticateToken, deleteProduct);
 
 export default router;

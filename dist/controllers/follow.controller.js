@@ -1,5 +1,5 @@
-import prisma from "../config/prismaConnect";
-import { notifyUserFollow } from "../utils/notificationHelper";
+import prisma from "../config/prismaConnect.js";
+import { notifyUserFollow } from "../utils/notificationHelper.js";
 export const followUser = (io) => async (req, res) => {
     try {
         const followerId = req.user?.id; // logged-in user

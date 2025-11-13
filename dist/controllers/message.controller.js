@@ -1,6 +1,6 @@
-import prisma from "../config/prismaConnect";
+import prisma from "../config/prismaConnect.js";
 import { MessageStatus } from "../../generated/prisma";
-import { notifyNewMessage } from "../utils/notificationHelper";
+import { notifyNewMessage } from "../utils/notificationHelper.js";
 import { userSocketMap } from "..";
 export const sendMessage = (io) => {
     return async (req, res) => {

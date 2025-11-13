@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { unFollow, getFollowers, getFollowing, followUser, } from "../controllers/follow.controller.js";
-import { authenticateToken } from "../middlewares/auth.middleware";
+import { authenticateToken } from "../middlewares/auth.middleware.js";
 export default (io) => {
     const router = Router();
     // ✅ Follow a user

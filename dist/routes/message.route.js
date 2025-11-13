@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { sendMessage, getOrCreateConversation, getUserConversations, markMessagesAsRead, getMessages } from "../controllers/message.controller";
+import { sendMessage, getOrCreateConversation, getUserConversations, markMessagesAsRead, getMessages } from "../controllers/message.controller.js";
 export default function messageRoutes(io) {
     const router = Router();
     // Message routes

@@ -1,0 +1,214 @@
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import prisma from "../config/prismaConnect.js"; // Use .js extension for imports
+export const registerUser = async (req, res) => {
+    try {
+        // Explicitly type the destructuring to avoid conflicts
+        const { firstName, lastName, email, password, gender, phone, role } = req.body;
+        // Validate required fields
+        if (!email || !password) {
+            return res.status(400).json({ error: "Email and password are required" });
+        }
+        // Check if user already exists
+        const existingUser = await prisma.user.findUnique({
+            where: { email }
+        });
+        if (existingUser) {
+            return res.status(400).json({ error: "User already exists with this email" });
+        }
+        // Hash password
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const user = await prisma.user.create({
+            data: {
+                firstName,
+                lastName,
+                email,
+                gender,
+                phone,
+                password: hashedPassword,
+                role: role
+            },
+            select: {
+                id: true,
+                email: true,
+                firstName: true,
+                lastName: true,
+                phone: true,
+                gender: true,
+                role: true,
+                createdAt: true
+            }
+        });
+        // Check JWT_SECRET exists
+        if (!process.env.JWT_SECRET) {
+            throw new Error("JWT_SECRET not configured");
+        }
+        // Generate JWT token
+        const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+        res.status(201).json({
+            message: "User registered successfully",
+            user,
+            token
+        });
+    }
+    catch (error) {
+        console.error('Registration error:', error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
+export const loginUser = async (req, res) => {
+    try {
+        // Explicitly type the destructuring
+        const { email, password } = req.body;
+        // Validate required fields
+        if (!email || !password) {
+            return res.status(400).json({ error: "Email and password are required" });
+        }
+        const user = await prisma.user.findUnique({
+            where: { email },
+            select: {
+                id: true,
+                email: true,
+                firstName: true,
+                lastName: true,
+                password: true,
+                phone: true,
+                gender: true,
+                role: true
+            }
+        });
+        if (!user) {
+            return res.status(401).json({ error: "Invalid credentials" });
+        }
+        // Compare password
+        const isValidPassword = await bcrypt.compare(password, user.password);
+        if (!isValidPassword) {
+            return res.status(401).json({ error: "Invalid credentials" });
+        }
+        // Check JWT_SECRET exists
+        if (!process.env.JWT_SECRET) {
+            throw new Error("JWT_SECRET not configured");
+        }
+        // Generate JWT token
+        const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+        // Remove password from response
+        const { password: _, ...userWithoutPassword } = user;
+        res.status(200).json({
+            message: "Login successful",
+            user: userWithoutPassword,
+            token
+        });
+    }
+    catch (error) {
+        console.error('Login error:', error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
+export const logoutUser = async (req, res) => {
+    try {
+        // Nothing to do server-side since JWTs are stateless
+        res.status(200).json({ message: "Logout successful" });
+    }
+    catch (error) {
+        console.error("Logout error:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
+export const getUserProfile = async (req, res) => {
+    try {
+        const userId = req.user?.id;
+        if (!userId) {
+            return res.status(401).json({ error: "Authentication required" });
+        }
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+            select: {
+                id: true,
+                email: true,
+                firstName: true,
+                lastName: true,
+                role: true,
+                createdAt: true,
+                gender: true,
+                phone: true,
+                stores: true
+            }
+        });
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+        res.status(200).json({ status: true, message: "User fetched successfully", user: user });
+    }
+    catch (error) {
+        console.error('Get user profile error:', error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
+export const updateUserProfile = async (req, res) => {
+    try {
+        const userId = req.user?.id;
+        const { firstName, lastName, email } = req.body;
+        if (!userId) {
+            return res.status(401).json({ error: "Authentication required" });
+        }
+        const updatedUser = await prisma.user.update({
+            where: { id: userId },
+            data: {
+                firstName,
+                lastName,
+                email
+            },
+            select: {
+                id: true,
+                email: true,
+                firstName: true,
+                lastName: true,
+                role: true,
+                phone: true,
+                createdAt: true,
+                updatedAt: true,
+                gender: true
+            }
+        });
+        res.status(200).json({ status: true, message: "User updated successfully", updatedUser: updatedUser });
+    }
+    catch (error) {
+        console.error('Update user profile error:', error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
+export const deleteUser = async (req, res) => {
+    try {
+        const userId = req.user?.id;
+        if (!userId) {
+            return res.status(401).json({ error: "Authentication required" });
+        }
+        await prisma.user.delete({
+            where: { id: userId }
+        });
+        res.status(204).send();
+    }
+    catch (error) {
+        console.error('Delete user error:', error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
+export const getAllUsers = async (req, res) => {
+    try {
+        const users = await prisma.user.findMany({
+            include: {
+                stores: true,
+            },
+        });
+        res.status(200).json({
+            status: true,
+            message: "Users fetched successfully",
+            users,
+        });
+    }
+    catch (error) {
+        console.error("Get all users error:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
+//# sourceMappingURL=auth.controller.js.map

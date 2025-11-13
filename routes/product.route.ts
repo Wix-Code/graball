@@ -11,7 +11,7 @@ import {
   getAllProducts,
   getMyProducts
 } from '../controllers/product.controller.js';
-import { authenticateToken } from '@/middlewares/auth.middleware.js';
+import { authenticateToken } from '../middlewares/auth.middleware.js';
 
 router.post('/',authenticateToken, addProduct);
 router.get('/', getAllProducts);

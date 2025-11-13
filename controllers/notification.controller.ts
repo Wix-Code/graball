@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import prisma from "@/config/prismaConnect";
+import prisma from "../config/prismaConnect";
 import { Server } from "socket.io";
 import { userSocketMap } from "../index.js";
 

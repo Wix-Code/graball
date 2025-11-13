@@ -5,8 +5,8 @@ import {
   getFollowers,
   getFollowing,
   followUser,
-} from "@/controllers/follow.controller";
-import { authenticateToken } from "@/middlewares/auth.middleware";
+} from "../controllers/follow.controller";
+import { authenticateToken } from "../middlewares/auth.middleware";
 
 export default (io: Server) => {
   const router = Router();

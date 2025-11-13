@@ -1,4 +1,4 @@
-import prisma from "@/config/prismaConnect";
+import prisma from "../config/prismaConnect";
 import type { Request, Response } from "express";
 
 export const addProduct = async (req: Request, res: Response) => {

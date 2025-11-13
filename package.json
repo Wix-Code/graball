@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/index.js",
-    "build": "tsc",
+    "build": "prisma generate && tsc",
     "dev": "tsx watch src/index.ts",
     "dev:old": "ts-node-dev --esm --respawn --transpile-only index.ts",
     "prisma:generate": "prisma generate",

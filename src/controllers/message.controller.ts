@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import prisma from "../config/prismaConnect";
+import prisma from "../config/prismaConnect.js";
 import { Server } from "socket.io";
 import { MessageStatus } from "../../generated/prisma";
-import { createAndSendNotification, notifyNewMessage } from "../utils/notificationHelper";
+import { createAndSendNotification, notifyNewMessage } from "../utils/notificationHelper.js";
 import { userSocketMap } from "..";
 
 export const sendMessage = (io: Server) => {

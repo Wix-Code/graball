@@ -1,5 +1,5 @@
-import prisma from "../config/prismaConnect";
-import { notifyUserFollow } from "../utils/notificationHelper";
+import prisma from "../config/prismaConnect.js";
+import { notifyUserFollow } from "../utils/notificationHelper.js";
 import { Request, Response } from "express";
 import { Server } from "socket.io";
 

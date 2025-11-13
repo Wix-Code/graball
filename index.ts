@@ -11,7 +11,7 @@ import categoryRoutes from "./routes/category.route.js";
 import messageRoutes from "./routes/message.route.js";
 import notificationRoutes from "./routes/notification.route.js";
 import followRoutes from "./routes/follow.route.js";
-import paystackRoutes from "./routes/paystack.route.js";
+import paystackRoutes from "./routes/payment.route.js";
 
 dotenv.config();
 

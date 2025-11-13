@@ -5,7 +5,7 @@ import {
   getUserConversations,
   markMessagesAsRead,
   getMessages
-} from "../controllers/message.controller";
+} from "../controllers/message.controller.js";
 import { Server } from "socket.io";
 
 export default function messageRoutes(io: Server) {

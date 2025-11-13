@@ -5,7 +5,7 @@ import {
   getFollowers,
   getFollowing,
   followUser,
-} from "../controllers/follow.controller";
+} from "../controllers/follow.controller.js";
 import { authenticateToken } from "../middlewares/auth.middleware";
 
 export default (io: Server) => {

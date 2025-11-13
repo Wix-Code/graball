@@ -7,7 +7,7 @@ import {
   markAllNotificationsAsRead,
   deleteNotification,
   getUnreadCount,
-} from "../controllers/notification.controller";
+} from "../controllers/notification.controller.js";
 
 export default (io: Server) => {
   const router = Router();

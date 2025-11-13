@@ -1,4 +1,4 @@
-import prisma from "@/config/prismaConnect";
+import prisma from "../config/prismaConnect";
 import jwt from "jsonwebtoken";
 // Authentication middleware - verifies JWT token
 export const authenticateToken = async (req, res, next) => {

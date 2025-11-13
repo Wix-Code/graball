@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import { addCategory, getAllCategories, getCategoryById } from '@/controllers/category.controller.js';
+import { addCategory, getAllCategories, getCategoryById } from '../controllers/category.controller.js';
 router.post('/', addCategory);
 router.get('/', getAllCategories);
 router.get('/:id', getCategoryById);

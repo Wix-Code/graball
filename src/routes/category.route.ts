@@ -2,7 +2,6 @@ import express from 'express';
 
 const router = express.Router();
 
-import { authenticateToken } from '@/middlewares/auth.middleware.js';
 import { addCategory, getAllCategories, getCategoryById } from '../controllers/category.controller.js';
 
 router.post('/', addCategory);

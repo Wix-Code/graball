@@ -1,4 +1,4 @@
-import prisma from "@/config/prismaConnect";
+import prisma from "../config/prismaConnect";
 import { userSocketMap } from "../index.js";
 // ✅ Use the same pattern as sendMessage - accept io as parameter
 export const sendNotification = (io) => {

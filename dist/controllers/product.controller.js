@@ -1,4 +1,4 @@
-import prisma from "@/config/prismaConnect";
+import prisma from "../config/prismaConnect";
 export const addProduct = async (req, res) => {
     try {
         const { name, description, price, imageUrl, storeId, category } = req.body;

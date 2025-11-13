@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
-import { addStore, deleteStore, getAllStores, getMyStore, getStoreById, updateStore } from "@/controllers/store.controller.js";
-import { authenticateToken } from "@/middlewares/auth.middleware";
+import { addStore, deleteStore, getAllStores, getMyStore, getStoreById, updateStore } from "../controllers/store.controller.js";
+import { authenticateToken } from "../middlewares/auth.middleware.js";
 router.post('/', authenticateToken, addStore);
 router.get('/', getAllStores);
 router.get("/my-store", authenticateToken, getMyStore);

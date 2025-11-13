@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { sendNotification, getUserNotifications, markNotificationAsRead, markAllNotificationsAsRead, deleteNotification, getUnreadCount, } from "@/controllers/notification.controller";
+import { sendNotification, getUserNotifications, markNotificationAsRead, markAllNotificationsAsRead, deleteNotification, getUnreadCount, } from "../controllers/notification.controller";
 export default (io) => {
     const router = Router();
     // Send notification (with io for real-time)

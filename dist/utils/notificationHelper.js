@@ -1,6 +1,5 @@
-// utils/notificationHelper.ts
-import prisma from "@/config/prismaConnect";
 import { userSocketMap } from "../index.js";
+import prisma from "../config/prismaConnect.js";
 export const createAndSendNotification = async (io, userId, title, message, type) => {
     try {
         const notification = await prisma.notification.create({

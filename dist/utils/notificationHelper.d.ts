@@ -1,5 +1,5 @@
 import { Server } from "socket.io";
-import { NotificationType } from "@/generated/prisma/index.js";
+import { NotificationType } from "../../generated/prisma/index.js";
 export declare const createAndSendNotification: (io: Server, userId: number, title: string, message: string, type: NotificationType) => Promise<({
     user: {
         firstName: string | null;
@@ -13,7 +13,7 @@ export declare const createAndSendNotification: (io: Server, userId: number, tit
     userId: number;
     title: string;
     message: string;
-    type: import("@/generated/prisma/index.js").$Enums.NotificationType;
+    type: import("../../generated/prisma/index.js").$Enums.NotificationType;
     isRead: boolean;
 }) | null>;
 export declare const notifyNewMessage: (io: Server, receiverId: number, senderName: string, messagePreview: string) => Promise<({
@@ -29,7 +29,7 @@ export declare const notifyNewMessage: (io: Server, receiverId: number, senderNa
     userId: number;
     title: string;
     message: string;
-    type: import("@/generated/prisma/index.js").$Enums.NotificationType;
+    type: import("../../generated/prisma/index.js").$Enums.NotificationType;
     isRead: boolean;
 }) | null>;
 export declare const notifyNewOrder: (io: Server, sellerId: number, buyerName: string, productName: string, orderRef: string) => Promise<({
@@ -45,7 +45,7 @@ export declare const notifyNewOrder: (io: Server, sellerId: number, buyerName: s
     userId: number;
     title: string;
     message: string;
-    type: import("@/generated/prisma/index.js").$Enums.NotificationType;
+    type: import("../../generated/prisma/index.js").$Enums.NotificationType;
     isRead: boolean;
 }) | null>;
 export declare const notifyOrderStatusUpdate: (io: Server, buyerId: number, status: string, orderRef: string) => Promise<({
@@ -61,7 +61,7 @@ export declare const notifyOrderStatusUpdate: (io: Server, buyerId: number, stat
     userId: number;
     title: string;
     message: string;
-    type: import("@/generated/prisma/index.js").$Enums.NotificationType;
+    type: import("../../generated/prisma/index.js").$Enums.NotificationType;
     isRead: boolean;
 }) | null>;
 export declare const notifyPromotion: (io: Server, userId: number, promotionTitle: string, promotionMessage: string) => Promise<({
@@ -77,7 +77,7 @@ export declare const notifyPromotion: (io: Server, userId: number, promotionTitl
     userId: number;
     title: string;
     message: string;
-    type: import("@/generated/prisma/index.js").$Enums.NotificationType;
+    type: import("../../generated/prisma/index.js").$Enums.NotificationType;
     isRead: boolean;
 }) | null>;
 export declare const notifySystemAlert: (io: Server, userId: number, alertTitle: string, alertMessage: string) => Promise<({
@@ -93,7 +93,7 @@ export declare const notifySystemAlert: (io: Server, userId: number, alertTitle:
     userId: number;
     title: string;
     message: string;
-    type: import("@/generated/prisma/index.js").$Enums.NotificationType;
+    type: import("../../generated/prisma/index.js").$Enums.NotificationType;
     isRead: boolean;
 }) | null>;
 export declare const broadcastNotification: (io: Server, userIds: number[], title: string, message: string, type: NotificationType) => Promise<(({
@@ -109,7 +109,7 @@ export declare const broadcastNotification: (io: Server, userIds: number[], titl
     userId: number;
     title: string;
     message: string;
-    type: import("@/generated/prisma/index.js").$Enums.NotificationType;
+    type: import("../../generated/prisma/index.js").$Enums.NotificationType;
     isRead: boolean;
 }) | null)[] | null>;
 export declare const notifyUserFollow: (io: Server, followedUserId: number, // the person being followed
@@ -126,7 +126,7 @@ followerName: string) => Promise<({
     userId: number;
     title: string;
     message: string;
-    type: import("@/generated/prisma/index.js").$Enums.NotificationType;
+    type: import("../../generated/prisma/index.js").$Enums.NotificationType;
     isRead: boolean;
 }) | null>;
 //# sourceMappingURL=notificationHelper.d.ts.map

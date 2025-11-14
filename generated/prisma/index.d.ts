@@ -5808,6 +5808,8 @@ export namespace Prisma {
     id: number | null
     name: string | null
     description: string | null
+    phone: string | null
+    location: string | null
     price: number | null
     storeId: number | null
     categoryId: number | null
@@ -5819,6 +5821,8 @@ export namespace Prisma {
     id: number | null
     name: string | null
     description: string | null
+    phone: string | null
+    location: string | null
     price: number | null
     storeId: number | null
     categoryId: number | null
@@ -5830,6 +5834,8 @@ export namespace Prisma {
     id: number
     name: number
     description: number
+    phone: number
+    location: number
     price: number
     storeId: number
     imageUrl: number
@@ -5858,6 +5864,8 @@ export namespace Prisma {
     id?: true
     name?: true
     description?: true
+    phone?: true
+    location?: true
     price?: true
     storeId?: true
     categoryId?: true
@@ -5869,6 +5877,8 @@ export namespace Prisma {
     id?: true
     name?: true
     description?: true
+    phone?: true
+    location?: true
     price?: true
     storeId?: true
     categoryId?: true
@@ -5880,6 +5890,8 @@ export namespace Prisma {
     id?: true
     name?: true
     description?: true
+    phone?: true
+    location?: true
     price?: true
     storeId?: true
     imageUrl?: true
@@ -5979,6 +5991,8 @@ export namespace Prisma {
     id: number
     name: string
     description: string | null
+    phone: string | null
+    location: string | null
     price: number
     storeId: number
     imageUrl: string[]
@@ -6010,6 +6024,8 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     description?: boolean
+    phone?: boolean
+    location?: boolean
     price?: boolean
     storeId?: boolean
     imageUrl?: boolean
@@ -6026,6 +6042,8 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     description?: boolean
+    phone?: boolean
+    location?: boolean
     price?: boolean
     storeId?: boolean
     imageUrl?: boolean
@@ -6040,6 +6058,8 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     description?: boolean
+    phone?: boolean
+    location?: boolean
     price?: boolean
     storeId?: boolean
     imageUrl?: boolean
@@ -6054,6 +6074,8 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     description?: boolean
+    phone?: boolean
+    location?: boolean
     price?: boolean
     storeId?: boolean
     imageUrl?: boolean
@@ -6062,7 +6084,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "price" | "storeId" | "imageUrl" | "categoryId" | "createdAt" | "updatedAt", ExtArgs["result"]["product"]>
+  export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "phone" | "location" | "price" | "storeId" | "imageUrl" | "categoryId" | "createdAt" | "updatedAt", ExtArgs["result"]["product"]>
   export type ProductInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     store?: boolean | StoreDefaultArgs<ExtArgs>
     category?: boolean | Product$categoryArgs<ExtArgs>
@@ -6089,6 +6111,8 @@ export namespace Prisma {
       id: number
       name: string
       description: string | null
+      phone: string | null
+      location: string | null
       price: number
       storeId: number
       imageUrl: string[]
@@ -6524,6 +6548,8 @@ export namespace Prisma {
     readonly id: FieldRef<"Product", 'Int'>
     readonly name: FieldRef<"Product", 'String'>
     readonly description: FieldRef<"Product", 'String'>
+    readonly phone: FieldRef<"Product", 'String'>
+    readonly location: FieldRef<"Product", 'String'>
     readonly price: FieldRef<"Product", 'Float'>
     readonly storeId: FieldRef<"Product", 'Int'>
     readonly imageUrl: FieldRef<"Product", 'String[]'>
@@ -13775,6 +13801,8 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     description: 'description',
+    phone: 'phone',
+    location: 'location',
     price: 'price',
     storeId: 'storeId',
     imageUrl: 'imageUrl',
@@ -14276,6 +14304,8 @@ export namespace Prisma {
     id?: IntFilter<"Product"> | number
     name?: StringFilter<"Product"> | string
     description?: StringNullableFilter<"Product"> | string | null
+    phone?: StringNullableFilter<"Product"> | string | null
+    location?: StringNullableFilter<"Product"> | string | null
     price?: FloatFilter<"Product"> | number
     storeId?: IntFilter<"Product"> | number
     imageUrl?: StringNullableListFilter<"Product">
@@ -14291,6 +14321,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
+    phone?: SortOrderInput | SortOrder
+    location?: SortOrderInput | SortOrder
     price?: SortOrder
     storeId?: SortOrder
     imageUrl?: SortOrder
@@ -14309,6 +14341,8 @@ export namespace Prisma {
     NOT?: ProductWhereInput | ProductWhereInput[]
     name?: StringFilter<"Product"> | string
     description?: StringNullableFilter<"Product"> | string | null
+    phone?: StringNullableFilter<"Product"> | string | null
+    location?: StringNullableFilter<"Product"> | string | null
     price?: FloatFilter<"Product"> | number
     storeId?: IntFilter<"Product"> | number
     imageUrl?: StringNullableListFilter<"Product">
@@ -14324,6 +14358,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
+    phone?: SortOrderInput | SortOrder
+    location?: SortOrderInput | SortOrder
     price?: SortOrder
     storeId?: SortOrder
     imageUrl?: SortOrder
@@ -14344,6 +14380,8 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"Product"> | number
     name?: StringWithAggregatesFilter<"Product"> | string
     description?: StringNullableWithAggregatesFilter<"Product"> | string | null
+    phone?: StringNullableWithAggregatesFilter<"Product"> | string | null
+    location?: StringNullableWithAggregatesFilter<"Product"> | string | null
     price?: FloatWithAggregatesFilter<"Product"> | number
     storeId?: IntWithAggregatesFilter<"Product"> | number
     imageUrl?: StringNullableListFilter<"Product">
@@ -15044,6 +15082,8 @@ export namespace Prisma {
   export type ProductCreateInput = {
     name: string
     description?: string | null
+    phone?: string | null
+    location?: string | null
     price: number
     imageUrl?: ProductCreateimageUrlInput | string[]
     createdAt?: Date | string
@@ -15057,6 +15097,8 @@ export namespace Prisma {
     id?: number
     name: string
     description?: string | null
+    phone?: string | null
+    location?: string | null
     price: number
     storeId: number
     imageUrl?: ProductCreateimageUrlInput | string[]
@@ -15069,6 +15111,8 @@ export namespace Prisma {
   export type ProductUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     price?: FloatFieldUpdateOperationsInput | number
     imageUrl?: ProductUpdateimageUrlInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15082,6 +15126,8 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     price?: FloatFieldUpdateOperationsInput | number
     storeId?: IntFieldUpdateOperationsInput | number
     imageUrl?: ProductUpdateimageUrlInput | string[]
@@ -15095,6 +15141,8 @@ export namespace Prisma {
     id?: number
     name: string
     description?: string | null
+    phone?: string | null
+    location?: string | null
     price: number
     storeId: number
     imageUrl?: ProductCreateimageUrlInput | string[]
@@ -15106,6 +15154,8 @@ export namespace Prisma {
   export type ProductUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     price?: FloatFieldUpdateOperationsInput | number
     imageUrl?: ProductUpdateimageUrlInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15116,6 +15166,8 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     price?: FloatFieldUpdateOperationsInput | number
     storeId?: IntFieldUpdateOperationsInput | number
     imageUrl?: ProductUpdateimageUrlInput | string[]
@@ -15902,6 +15954,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    phone?: SortOrder
+    location?: SortOrder
     price?: SortOrder
     storeId?: SortOrder
     imageUrl?: SortOrder
@@ -15921,6 +15975,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    phone?: SortOrder
+    location?: SortOrder
     price?: SortOrder
     storeId?: SortOrder
     categoryId?: SortOrder
@@ -15932,6 +15988,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    phone?: SortOrder
+    location?: SortOrder
     price?: SortOrder
     storeId?: SortOrder
     categoryId?: SortOrder
@@ -18092,6 +18150,8 @@ export namespace Prisma {
   export type ProductCreateWithoutStoreInput = {
     name: string
     description?: string | null
+    phone?: string | null
+    location?: string | null
     price: number
     imageUrl?: ProductCreateimageUrlInput | string[]
     createdAt?: Date | string
@@ -18104,6 +18164,8 @@ export namespace Prisma {
     id?: number
     name: string
     description?: string | null
+    phone?: string | null
+    location?: string | null
     price: number
     imageUrl?: ProductCreateimageUrlInput | string[]
     categoryId?: number | null
@@ -18205,6 +18267,8 @@ export namespace Prisma {
     id?: IntFilter<"Product"> | number
     name?: StringFilter<"Product"> | string
     description?: StringNullableFilter<"Product"> | string | null
+    phone?: StringNullableFilter<"Product"> | string | null
+    location?: StringNullableFilter<"Product"> | string | null
     price?: FloatFilter<"Product"> | number
     storeId?: IntFilter<"Product"> | number
     imageUrl?: StringNullableListFilter<"Product">
@@ -18357,6 +18421,8 @@ export namespace Prisma {
   export type ProductCreateWithoutCategoryInput = {
     name: string
     description?: string | null
+    phone?: string | null
+    location?: string | null
     price: number
     imageUrl?: ProductCreateimageUrlInput | string[]
     createdAt?: Date | string
@@ -18369,6 +18435,8 @@ export namespace Prisma {
     id?: number
     name: string
     description?: string | null
+    phone?: string | null
+    location?: string | null
     price: number
     storeId: number
     imageUrl?: ProductCreateimageUrlInput | string[]
@@ -19353,6 +19421,8 @@ export namespace Prisma {
   export type ProductCreateWithoutSavedByInput = {
     name: string
     description?: string | null
+    phone?: string | null
+    location?: string | null
     price: number
     imageUrl?: ProductCreateimageUrlInput | string[]
     createdAt?: Date | string
@@ -19365,6 +19435,8 @@ export namespace Prisma {
     id?: number
     name: string
     description?: string | null
+    phone?: string | null
+    location?: string | null
     price: number
     storeId: number
     imageUrl?: ProductCreateimageUrlInput | string[]
@@ -19452,6 +19524,8 @@ export namespace Prisma {
   export type ProductUpdateWithoutSavedByInput = {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     price?: FloatFieldUpdateOperationsInput | number
     imageUrl?: ProductUpdateimageUrlInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19464,6 +19538,8 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     price?: FloatFieldUpdateOperationsInput | number
     storeId?: IntFieldUpdateOperationsInput | number
     imageUrl?: ProductUpdateimageUrlInput | string[]
@@ -19808,6 +19884,8 @@ export namespace Prisma {
     id?: number
     name: string
     description?: string | null
+    phone?: string | null
+    location?: string | null
     price: number
     imageUrl?: ProductCreateimageUrlInput | string[]
     categoryId?: number | null
@@ -19818,6 +19896,8 @@ export namespace Prisma {
   export type ProductUpdateWithoutStoreInput = {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     price?: FloatFieldUpdateOperationsInput | number
     imageUrl?: ProductUpdateimageUrlInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19830,6 +19910,8 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     price?: FloatFieldUpdateOperationsInput | number
     imageUrl?: ProductUpdateimageUrlInput | string[]
     categoryId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -19842,6 +19924,8 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     price?: FloatFieldUpdateOperationsInput | number
     imageUrl?: ProductUpdateimageUrlInput | string[]
     categoryId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -19876,6 +19960,8 @@ export namespace Prisma {
     id?: number
     name: string
     description?: string | null
+    phone?: string | null
+    location?: string | null
     price: number
     storeId: number
     imageUrl?: ProductCreateimageUrlInput | string[]
@@ -19886,6 +19972,8 @@ export namespace Prisma {
   export type ProductUpdateWithoutCategoryInput = {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     price?: FloatFieldUpdateOperationsInput | number
     imageUrl?: ProductUpdateimageUrlInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19898,6 +19986,8 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     price?: FloatFieldUpdateOperationsInput | number
     storeId?: IntFieldUpdateOperationsInput | number
     imageUrl?: ProductUpdateimageUrlInput | string[]
@@ -19910,6 +20000,8 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     price?: FloatFieldUpdateOperationsInput | number
     storeId?: IntFieldUpdateOperationsInput | number
     imageUrl?: ProductUpdateimageUrlInput | string[]

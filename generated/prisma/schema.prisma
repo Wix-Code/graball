@@ -70,6 +70,8 @@ model Product {
   id          Int            @id @default(autoincrement())
   name        String
   description String?
+  phone       String?
+  location    String?
   price       Float
   storeId     Int
   imageUrl    String[]

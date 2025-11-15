@@ -106,7 +106,13 @@ export const loginUser = async (req: Request, res: Response) => {
         password: true,
         phone: true,
         gender: true,
-        role: true
+        role: true,
+        stores: {
+          select: {
+            id: true,
+            name: true
+          }
+        }
       }
     });
 

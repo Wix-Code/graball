@@ -3,7 +3,7 @@ import type { Request, Response } from "express";
 
 export const addProduct = async (req: Request, res: Response) => {
   try {
-    const { name, description, price, imageUrl, storeId, category } = req.body;
+    const { name, description, price, imageUrl, storeId, category, phone, location } = req.body;
     const userId = req.user?.id;
 
     if (!userId) {
@@ -34,6 +34,8 @@ export const addProduct = async (req: Request, res: Response) => {
         price: Number(price),
         imageUrl,
         category,
+        phone,
+        location,
         store: {
           connect: { id: parsedStoreId },
         },
@@ -357,5 +359,33 @@ export const getProductsByCategory = async (req: Request, res: Response) => {
   } catch (error) {
     console.error("Get products by category error:", error);
     res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const getRelatedProducts = async (req: Request, res: Response) => {
+  try {
+    const productId = Number(req.params.id);
+
+    // Get the product first
+    const product = await prisma.product.findUnique({
+      where: { id: productId },
+    });
+
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    // Get related products
+    const related = await prisma.product.findMany({
+      where: {
+        categoryId: product.categoryId,
+        id: { not: productId }
+      },
+      take: 6, // limit results
+    });
+
+    res.status(200).json({ status: true, message: "Related products successfully fetched", data: related });
+  } catch (err) {
+    res.status(500).json({ error: "Server error" });
   }
 };

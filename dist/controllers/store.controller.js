@@ -6,19 +6,19 @@ export const addStore = async (req, res) => {
         if (!userId) {
             return res.status(400).json({ error: "User not authenticated" });
         }
-        // Check active subscription
-        const activeSub = await prisma.subscription.findFirst({
-            where: {
-                userId,
-                status: "active",
-                endDate: { gte: new Date() },
-            },
-        });
-        if (!activeSub) {
-            return res
-                .status(403)
-                .json({ error: "You must have an active subscription to create a store." });
-        }
+        // // Check active subscription
+        // const activeSub = await prisma.subscription.findFirst({
+        //   where: {
+        //     userId,
+        //     status: "active",
+        //     endDate: { gte: new Date() },
+        //   },
+        // });
+        // if (!activeSub) {
+        //   return res
+        //     .status(403)
+        //     .json({ error: "You must have an active subscription to create a store." });
+        // }
         const existingStore = await prisma.store.findFirst({
             where: { ownerId: userId },
         });

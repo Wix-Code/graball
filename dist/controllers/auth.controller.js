@@ -74,7 +74,13 @@ export const loginUser = async (req, res) => {
                 password: true,
                 phone: true,
                 gender: true,
-                role: true
+                role: true,
+                stores: {
+                    select: {
+                        id: true,
+                        name: true
+                    }
+                }
             }
         });
         if (!user) {

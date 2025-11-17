@@ -23,7 +23,7 @@ model User {
   image                 String?
   gender                String?
   dob                   String?
-  phone                 Int?
+  phone                 String?
   password              String
   role                  UserRole       @default(CUSTOMER) // CUSTOMER, VENDOR, ADMIN
   stores                Store[]        @relation("UserStores")

@@ -63,8 +63,6 @@ export const followUser = (io: Server) => async (req: Request, res: Response) =>
   }
 };
 
-
-
 /**
  * ✅ Unfollow a user
  */

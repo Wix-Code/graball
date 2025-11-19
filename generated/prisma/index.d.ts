@@ -93,7 +93,8 @@ export const NotificationType: {
   MESSAGE: 'MESSAGE',
   PROMOTION: 'PROMOTION',
   ORDER: 'ORDER',
-  FOLLOW: 'FOLLOW'
+  FOLLOW: 'FOLLOW',
+  SAVE: 'SAVE'
 };
 
 export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType]

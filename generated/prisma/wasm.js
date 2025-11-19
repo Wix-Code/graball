@@ -250,7 +250,8 @@ exports.NotificationType = exports.$Enums.NotificationType = {
   MESSAGE: 'MESSAGE',
   PROMOTION: 'PROMOTION',
   ORDER: 'ORDER',
-  FOLLOW: 'FOLLOW'
+  FOLLOW: 'FOLLOW',
+  SAVE: 'SAVE'
 };
 
 exports.MessageStatus = exports.$Enums.MessageStatus = {

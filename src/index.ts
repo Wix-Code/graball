@@ -12,6 +12,7 @@ import messageRoutes from "./routes/message.route.js";
 import notificationRoutes from "./routes/notification.route.js";
 import followRoutes from "./routes/follow.route.js";
 import paystackRoutes from "./routes/payment.route.js";
+import savedProductRoutes from "./routes/saved.route.js";
 
 dotenv.config();
 
@@ -36,6 +37,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/stores", storeRoutes);
 app.use("/api/categories", categoryRoutes);
+app.use("/api/saved", savedProductRoutes(io));
 app.use("/api/paystack", paystackRoutes);
 app.use("/api/messages", messageRoutes(io)); // pass io into routes
 app.use("/api/notifications", notificationRoutes(io));

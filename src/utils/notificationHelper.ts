@@ -152,6 +152,21 @@ export const broadcastNotification = async (
   }
 };
 
+export const notifySavedProduct = async (
+  io: Server,
+  ownerId: number,      // product owner
+  saverName: string,    // person who saved the product
+  productName: string
+) => {
+  return createAndSendNotification(
+    io,
+    ownerId,
+    "Product Saved",
+    `${saverName} saved your product "${productName}" ❤️`,
+    "SAVE"
+  );
+};
+
 export const notifyUserFollow = async (
   io: Server,
   followedUserId: number, // the person being followed

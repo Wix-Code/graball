@@ -9268,6 +9268,7 @@ export namespace Prisma {
     senderId: number | null
     receiverId: number | null
     content: string | null
+    isRead: boolean | null
     status: $Enums.MessageStatus | null
     createdAt: Date | null
   }
@@ -9278,6 +9279,7 @@ export namespace Prisma {
     senderId: number | null
     receiverId: number | null
     content: string | null
+    isRead: boolean | null
     status: $Enums.MessageStatus | null
     createdAt: Date | null
   }
@@ -9289,6 +9291,7 @@ export namespace Prisma {
     receiverId: number
     content: number
     images: number
+    isRead: number
     status: number
     createdAt: number
     _all: number
@@ -9315,6 +9318,7 @@ export namespace Prisma {
     senderId?: true
     receiverId?: true
     content?: true
+    isRead?: true
     status?: true
     createdAt?: true
   }
@@ -9325,6 +9329,7 @@ export namespace Prisma {
     senderId?: true
     receiverId?: true
     content?: true
+    isRead?: true
     status?: true
     createdAt?: true
   }
@@ -9336,6 +9341,7 @@ export namespace Prisma {
     receiverId?: true
     content?: true
     images?: true
+    isRead?: true
     status?: true
     createdAt?: true
     _all?: true
@@ -9434,6 +9440,7 @@ export namespace Prisma {
     receiverId: number
     content: string
     images: string[]
+    isRead: boolean
     status: $Enums.MessageStatus
     createdAt: Date
     _count: MessageCountAggregateOutputType | null
@@ -9464,6 +9471,7 @@ export namespace Prisma {
     receiverId?: boolean
     content?: boolean
     images?: boolean
+    isRead?: boolean
     status?: boolean
     createdAt?: boolean
     conversation?: boolean | ConversationDefaultArgs<ExtArgs>
@@ -9478,6 +9486,7 @@ export namespace Prisma {
     receiverId?: boolean
     content?: boolean
     images?: boolean
+    isRead?: boolean
     status?: boolean
     createdAt?: boolean
     conversation?: boolean | ConversationDefaultArgs<ExtArgs>
@@ -9492,6 +9501,7 @@ export namespace Prisma {
     receiverId?: boolean
     content?: boolean
     images?: boolean
+    isRead?: boolean
     status?: boolean
     createdAt?: boolean
     conversation?: boolean | ConversationDefaultArgs<ExtArgs>
@@ -9506,11 +9516,12 @@ export namespace Prisma {
     receiverId?: boolean
     content?: boolean
     images?: boolean
+    isRead?: boolean
     status?: boolean
     createdAt?: boolean
   }
 
-  export type MessageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "conversationId" | "senderId" | "receiverId" | "content" | "images" | "status" | "createdAt", ExtArgs["result"]["message"]>
+  export type MessageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "conversationId" | "senderId" | "receiverId" | "content" | "images" | "isRead" | "status" | "createdAt", ExtArgs["result"]["message"]>
   export type MessageInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     conversation?: boolean | ConversationDefaultArgs<ExtArgs>
     sender?: boolean | UserDefaultArgs<ExtArgs>
@@ -9541,6 +9552,7 @@ export namespace Prisma {
       receiverId: number
       content: string
       images: string[]
+      isRead: boolean
       status: $Enums.MessageStatus
       createdAt: Date
     }, ExtArgs["result"]["message"]>
@@ -9975,6 +9987,7 @@ export namespace Prisma {
     readonly receiverId: FieldRef<"Message", 'Int'>
     readonly content: FieldRef<"Message", 'String'>
     readonly images: FieldRef<"Message", 'String[]'>
+    readonly isRead: FieldRef<"Message", 'Boolean'>
     readonly status: FieldRef<"Message", 'MessageStatus'>
     readonly createdAt: FieldRef<"Message", 'DateTime'>
   }
@@ -13842,6 +13855,7 @@ export namespace Prisma {
     receiverId: 'receiverId',
     content: 'content',
     images: 'images',
+    isRead: 'isRead',
     status: 'status',
     createdAt: 'createdAt'
   };
@@ -14521,6 +14535,7 @@ export namespace Prisma {
     receiverId?: IntFilter<"Message"> | number
     content?: StringFilter<"Message"> | string
     images?: StringNullableListFilter<"Message">
+    isRead?: BoolFilter<"Message"> | boolean
     status?: EnumMessageStatusFilter<"Message"> | $Enums.MessageStatus
     createdAt?: DateTimeFilter<"Message"> | Date | string
     conversation?: XOR<ConversationScalarRelationFilter, ConversationWhereInput>
@@ -14535,6 +14550,7 @@ export namespace Prisma {
     receiverId?: SortOrder
     content?: SortOrder
     images?: SortOrder
+    isRead?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
     conversation?: ConversationOrderByWithRelationInput
@@ -14552,6 +14568,7 @@ export namespace Prisma {
     receiverId?: IntFilter<"Message"> | number
     content?: StringFilter<"Message"> | string
     images?: StringNullableListFilter<"Message">
+    isRead?: BoolFilter<"Message"> | boolean
     status?: EnumMessageStatusFilter<"Message"> | $Enums.MessageStatus
     createdAt?: DateTimeFilter<"Message"> | Date | string
     conversation?: XOR<ConversationScalarRelationFilter, ConversationWhereInput>
@@ -14566,6 +14583,7 @@ export namespace Prisma {
     receiverId?: SortOrder
     content?: SortOrder
     images?: SortOrder
+    isRead?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
     _count?: MessageCountOrderByAggregateInput
@@ -14585,6 +14603,7 @@ export namespace Prisma {
     receiverId?: IntWithAggregatesFilter<"Message"> | number
     content?: StringWithAggregatesFilter<"Message"> | string
     images?: StringNullableListFilter<"Message">
+    isRead?: BoolWithAggregatesFilter<"Message"> | boolean
     status?: EnumMessageStatusWithAggregatesFilter<"Message"> | $Enums.MessageStatus
     createdAt?: DateTimeWithAggregatesFilter<"Message"> | Date | string
   }
@@ -15299,6 +15318,7 @@ export namespace Prisma {
   export type MessageCreateInput = {
     content: string
     images?: MessageCreateimagesInput | string[]
+    isRead?: boolean
     status?: $Enums.MessageStatus
     createdAt?: Date | string
     conversation: ConversationCreateNestedOneWithoutMessagesInput
@@ -15313,6 +15333,7 @@ export namespace Prisma {
     receiverId: number
     content: string
     images?: MessageCreateimagesInput | string[]
+    isRead?: boolean
     status?: $Enums.MessageStatus
     createdAt?: Date | string
   }
@@ -15320,6 +15341,7 @@ export namespace Prisma {
   export type MessageUpdateInput = {
     content?: StringFieldUpdateOperationsInput | string
     images?: MessageUpdateimagesInput | string[]
+    isRead?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumMessageStatusFieldUpdateOperationsInput | $Enums.MessageStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     conversation?: ConversationUpdateOneRequiredWithoutMessagesNestedInput
@@ -15334,6 +15356,7 @@ export namespace Prisma {
     receiverId?: IntFieldUpdateOperationsInput | number
     content?: StringFieldUpdateOperationsInput | string
     images?: MessageUpdateimagesInput | string[]
+    isRead?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumMessageStatusFieldUpdateOperationsInput | $Enums.MessageStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -15345,6 +15368,7 @@ export namespace Prisma {
     receiverId: number
     content: string
     images?: MessageCreateimagesInput | string[]
+    isRead?: boolean
     status?: $Enums.MessageStatus
     createdAt?: Date | string
   }
@@ -15352,6 +15376,7 @@ export namespace Prisma {
   export type MessageUpdateManyMutationInput = {
     content?: StringFieldUpdateOperationsInput | string
     images?: MessageUpdateimagesInput | string[]
+    isRead?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumMessageStatusFieldUpdateOperationsInput | $Enums.MessageStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -15363,6 +15388,7 @@ export namespace Prisma {
     receiverId?: IntFieldUpdateOperationsInput | number
     content?: StringFieldUpdateOperationsInput | string
     images?: MessageUpdateimagesInput | string[]
+    isRead?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumMessageStatusFieldUpdateOperationsInput | $Enums.MessageStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -16136,6 +16162,7 @@ export namespace Prisma {
     receiverId?: SortOrder
     content?: SortOrder
     images?: SortOrder
+    isRead?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
   }
@@ -16153,6 +16180,7 @@ export namespace Prisma {
     senderId?: SortOrder
     receiverId?: SortOrder
     content?: SortOrder
+    isRead?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
   }
@@ -16163,6 +16191,7 @@ export namespace Prisma {
     senderId?: SortOrder
     receiverId?: SortOrder
     content?: SortOrder
+    isRead?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
   }
@@ -17523,6 +17552,7 @@ export namespace Prisma {
   export type MessageCreateWithoutSenderInput = {
     content: string
     images?: MessageCreateimagesInput | string[]
+    isRead?: boolean
     status?: $Enums.MessageStatus
     createdAt?: Date | string
     conversation: ConversationCreateNestedOneWithoutMessagesInput
@@ -17535,6 +17565,7 @@ export namespace Prisma {
     receiverId: number
     content: string
     images?: MessageCreateimagesInput | string[]
+    isRead?: boolean
     status?: $Enums.MessageStatus
     createdAt?: Date | string
   }
@@ -17552,6 +17583,7 @@ export namespace Prisma {
   export type MessageCreateWithoutReceiverInput = {
     content: string
     images?: MessageCreateimagesInput | string[]
+    isRead?: boolean
     status?: $Enums.MessageStatus
     createdAt?: Date | string
     conversation: ConversationCreateNestedOneWithoutMessagesInput
@@ -17564,6 +17596,7 @@ export namespace Prisma {
     senderId: number
     content: string
     images?: MessageCreateimagesInput | string[]
+    isRead?: boolean
     status?: $Enums.MessageStatus
     createdAt?: Date | string
   }
@@ -17811,6 +17844,7 @@ export namespace Prisma {
     receiverId?: IntFilter<"Message"> | number
     content?: StringFilter<"Message"> | string
     images?: StringNullableListFilter<"Message">
+    isRead?: BoolFilter<"Message"> | boolean
     status?: EnumMessageStatusFilter<"Message"> | $Enums.MessageStatus
     createdAt?: DateTimeFilter<"Message"> | Date | string
   }
@@ -18969,6 +19003,7 @@ export namespace Prisma {
   export type MessageCreateWithoutConversationInput = {
     content: string
     images?: MessageCreateimagesInput | string[]
+    isRead?: boolean
     status?: $Enums.MessageStatus
     createdAt?: Date | string
     sender: UserCreateNestedOneWithoutMessagesSentInput
@@ -18981,6 +19016,7 @@ export namespace Prisma {
     receiverId: number
     content: string
     images?: MessageCreateimagesInput | string[]
+    isRead?: boolean
     status?: $Enums.MessageStatus
     createdAt?: Date | string
   }
@@ -19568,6 +19604,7 @@ export namespace Prisma {
     receiverId: number
     content: string
     images?: MessageCreateimagesInput | string[]
+    isRead?: boolean
     status?: $Enums.MessageStatus
     createdAt?: Date | string
   }
@@ -19578,6 +19615,7 @@ export namespace Prisma {
     senderId: number
     content: string
     images?: MessageCreateimagesInput | string[]
+    isRead?: boolean
     status?: $Enums.MessageStatus
     createdAt?: Date | string
   }
@@ -19687,6 +19725,7 @@ export namespace Prisma {
   export type MessageUpdateWithoutSenderInput = {
     content?: StringFieldUpdateOperationsInput | string
     images?: MessageUpdateimagesInput | string[]
+    isRead?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumMessageStatusFieldUpdateOperationsInput | $Enums.MessageStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     conversation?: ConversationUpdateOneRequiredWithoutMessagesNestedInput
@@ -19699,6 +19738,7 @@ export namespace Prisma {
     receiverId?: IntFieldUpdateOperationsInput | number
     content?: StringFieldUpdateOperationsInput | string
     images?: MessageUpdateimagesInput | string[]
+    isRead?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumMessageStatusFieldUpdateOperationsInput | $Enums.MessageStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -19709,6 +19749,7 @@ export namespace Prisma {
     receiverId?: IntFieldUpdateOperationsInput | number
     content?: StringFieldUpdateOperationsInput | string
     images?: MessageUpdateimagesInput | string[]
+    isRead?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumMessageStatusFieldUpdateOperationsInput | $Enums.MessageStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -19716,6 +19757,7 @@ export namespace Prisma {
   export type MessageUpdateWithoutReceiverInput = {
     content?: StringFieldUpdateOperationsInput | string
     images?: MessageUpdateimagesInput | string[]
+    isRead?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumMessageStatusFieldUpdateOperationsInput | $Enums.MessageStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     conversation?: ConversationUpdateOneRequiredWithoutMessagesNestedInput
@@ -19728,6 +19770,7 @@ export namespace Prisma {
     senderId?: IntFieldUpdateOperationsInput | number
     content?: StringFieldUpdateOperationsInput | string
     images?: MessageUpdateimagesInput | string[]
+    isRead?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumMessageStatusFieldUpdateOperationsInput | $Enums.MessageStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -19738,6 +19781,7 @@ export namespace Prisma {
     senderId?: IntFieldUpdateOperationsInput | number
     content?: StringFieldUpdateOperationsInput | string
     images?: MessageUpdateimagesInput | string[]
+    isRead?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumMessageStatusFieldUpdateOperationsInput | $Enums.MessageStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -20010,6 +20054,7 @@ export namespace Prisma {
     receiverId: number
     content: string
     images?: MessageCreateimagesInput | string[]
+    isRead?: boolean
     status?: $Enums.MessageStatus
     createdAt?: Date | string
   }
@@ -20017,6 +20062,7 @@ export namespace Prisma {
   export type MessageUpdateWithoutConversationInput = {
     content?: StringFieldUpdateOperationsInput | string
     images?: MessageUpdateimagesInput | string[]
+    isRead?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumMessageStatusFieldUpdateOperationsInput | $Enums.MessageStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sender?: UserUpdateOneRequiredWithoutMessagesSentNestedInput
@@ -20029,6 +20075,7 @@ export namespace Prisma {
     receiverId?: IntFieldUpdateOperationsInput | number
     content?: StringFieldUpdateOperationsInput | string
     images?: MessageUpdateimagesInput | string[]
+    isRead?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumMessageStatusFieldUpdateOperationsInput | $Enums.MessageStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -20039,6 +20086,7 @@ export namespace Prisma {
     receiverId?: IntFieldUpdateOperationsInput | number
     content?: StringFieldUpdateOperationsInput | string
     images?: MessageUpdateimagesInput | string[]
+    isRead?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumMessageStatusFieldUpdateOperationsInput | $Enums.MessageStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

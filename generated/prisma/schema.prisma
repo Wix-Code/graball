@@ -115,6 +115,7 @@ model Message {
   receiver       User          @relation("ReceivedMessages", fields: [receiverId], references: [id])
   content        String
   images         String[]
+  isRead         Boolean       @default(false)
   status         MessageStatus @default(SENT)
   createdAt      DateTime      @default(now())
 

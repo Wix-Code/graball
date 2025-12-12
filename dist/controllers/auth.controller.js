@@ -24,7 +24,7 @@ export const registerUser = async (req, res) => {
                 lastName,
                 email,
                 gender,
-                phone,
+                phone: phone ? String(phone) : undefined,
                 password: hashedPassword,
                 role: role
             },

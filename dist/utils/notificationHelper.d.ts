@@ -112,6 +112,25 @@ export declare const broadcastNotification: (io: Server, userIds: number[], titl
     type: import("../../generated/prisma/index.js").$Enums.NotificationType;
     isRead: boolean;
 }) | null)[] | null>;
+export declare const notifySavedProduct: (io: Server, ownerId: number, // product owner
+saverName: string, // person who saved the product
+productName: string) => Promise<({
+    user: {
+        firstName: string | null;
+        lastName: string | null;
+        email: string;
+        id: number;
+    };
+} & {
+    id: number;
+    createdAt: Date;
+    userId: number;
+    title: string;
+    message: string;
+    type: import("../../generated/prisma/index.js").$Enums.NotificationType;
+    isRead: boolean;
+}) | null>;
+export declare const notifyUnsavedProduct: (io: any, ownerId: number, unsaverName: string, productName: string) => Promise<void>;
 export declare const notifyUserFollow: (io: Server, followedUserId: number, // the person being followed
 followerName: string) => Promise<({
     user: {

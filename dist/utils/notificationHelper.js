@@ -67,6 +67,39 @@ export const broadcastNotification = async (io, userIds, title, message, type) =
         return null;
     }
 };
+export const notifySavedProduct = async (io, ownerId, // product owner
+saverName, // person who saved the product
+productName) => {
+    return createAndSendNotification(io, ownerId, "Product Saved", `${saverName} saved your product "${productName}" ❤️`, "SAVE");
+};
+// Notify when someone unsaves a product
+export const notifyUnsavedProduct = async (io, ownerId, unsaverName, productName) => {
+    try {
+        // Create notification in database
+        const notification = await prisma.notification.create({
+            data: {
+                userId: ownerId,
+                title: "Product Unsaved",
+                message: `${unsaverName} removed ${productName} from their saved list`,
+                type: "SAVE",
+                isRead: false,
+            },
+        });
+        // Emit real-time notification via Socket.IO
+        io.to(`user_${ownerId}`).emit("notification", {
+            id: notification.id,
+            title: notification.title,
+            message: notification.message,
+            type: notification.type,
+            isRead: notification.isRead,
+            createdAt: notification.createdAt,
+        });
+        console.log(`Unsave notification sent to user ${ownerId}`);
+    }
+    catch (error) {
+        console.error("Error sending unsave notification:", error);
+    }
+};
 export const notifyUserFollow = async (io, followedUserId, // the person being followed
 followerName) => {
     return createAndSendNotification(io, followedUserId, "New Follower", `${followerName} just followed you 🎉`, "FOLLOW");

@@ -47,7 +47,7 @@ export const registerUser = async (req: Request, res: Response) => {
         lastName,
         email,
         gender,
-        phone,
+        phone: phone ? String(phone) : undefined,
         password: hashedPassword,
         role: role as 'CUSTOMER' | 'VENDOR' | 'ADMIN'
       },

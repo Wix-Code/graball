@@ -123,6 +123,13 @@ export const getMessages = async (req, res) => {
         const totalCount = await prisma.message.count({
             where: { conversationId: Number(conversationId) }
         });
+        const unreadCount = await prisma.message.count({
+            where: {
+                conversationId: Number(conversationId),
+                receiverId: req?.user?.id, // the logged-in user
+                isRead: false
+            }
+        });
         res.status(200).json({
             status: true,
             message: "Messages fetched successfully",
@@ -133,7 +140,8 @@ export const getMessages = async (req, res) => {
                     limit: take,
                     offset: skip,
                     hasMore: skip + messages.length < totalCount
-                }
+                },
+                unreadCount
             }
         });
     }

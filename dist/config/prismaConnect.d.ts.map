@@ -1,1 +1,1 @@
-{"version":3,"file":"prismaConnect.d.ts","sourceRoot":"","sources":["../../src/config/prismaConnect.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,YAAY,EAAE,MAAM,iCAAiC,CAAC;AAE/D,QAAA,MAAM,MAAM,4JAAqB,CAAA;AAEjC,eAAe,MAAM,CAAC"}
+{"version":3,"file":"prismaConnect.d.ts","sourceRoot":"","sources":["../../src/config/prismaConnect.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,YAAY,EAAE,MAAM,iCAAiC,CAAC;AAE/D,QAAA,MAAM,MAAM,4JAAqB,CAAC;AAElC,eAAe,MAAM,CAAC"}

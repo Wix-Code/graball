@@ -11,13 +11,14 @@ import messageRoutes from "./routes/message.route.js";
 import notificationRoutes from "./routes/notification.route.js";
 import followRoutes from "./routes/follow.route.js";
 import paystackRoutes from "./routes/payment.route.js";
+import savedProductRoutes from "./routes/saved.route.js";
 dotenv.config();
 const app = express();
 const httpServer = createServer(app);
 // ✅ Setup Socket.io
 const io = new Server(httpServer, {
     cors: {
-        origin: "*", // replace with your frontend URL in production
+        origin: ["http://localhost:3001", "https://venyers.vercel.app/"], // replace with your frontend URL in production
         methods: ["GET", "POST"],
     },
 });
@@ -29,6 +30,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/stores", storeRoutes);
 app.use("/api/categories", categoryRoutes);
+app.use("/api/saved", savedProductRoutes(io));
 app.use("/api/paystack", paystackRoutes);
 app.use("/api/messages", messageRoutes(io)); // pass io into routes
 app.use("/api/notifications", notificationRoutes(io));

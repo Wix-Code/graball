@@ -1,7 +1,7 @@
 import { Server } from "socket.io";
 import { addSaved, getSaved, removeAllSaved, unsaveProduct } from "../controllers/saved.controller.js";
 import express from "express";
-import { authenticateToken } from "@/middlewares/auth.middleware.js";
+import { authenticateToken } from "../middlewares/auth.middleware.js";
 
 export default (io: Server) => {
   const router = express.Router();

@@ -1,4 +1,4 @@
-import prisma from "@/config/prismaConnect";
+import prisma from "../config/prismaConnect";
 import { Request, Response } from "express";
 import { notifySavedProduct, notifyUnsavedProduct } from "../utils/notificationHelper.js";
 

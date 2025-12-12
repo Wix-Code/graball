@@ -263,22 +263,62 @@ export const removeAllSaved = async (req: Request, res: Response) => {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    // Get count before deletion for response
-    const countBeforeDelete = await prisma.savedProduct.count({
+    // Get all saved products with details before deletion
+    const savedProducts = await prisma.savedProduct.findMany({
       where: { userId: Number(userId) },
+      include: {
+        product: {
+          include: {
+            store: {
+              include: {
+                owner: true
+              }
+            }
+          }
+        }
+      }
     });
 
-    if (countBeforeDelete === 0) {
+    if (savedProducts.length === 0) {
       return res.status(404).json({ 
         success: false,
         message: "No saved products found" 
       });
     }
 
+    // Get user info for notifications
+    const user = await prisma.user.findUnique({
+      where: { id: Number(userId) },
+      select: { firstName: true, lastName: true },
+    });
+
+    const userName = `${user?.firstName ?? ""} ${user?.lastName ?? ""}`.trim() || "Someone";
+
     // Delete all saved products for this user
     const result = await prisma.savedProduct.deleteMany({
       where: { userId: Number(userId) },
     });
+
+    // Send notifications to all unique product owners (async, don't wait)
+    const notificationPromises = savedProducts
+      .filter(sp => sp.product.store.ownerId !== userId) // Don't notify self
+      .map(async (savedProduct) => {
+        try {
+          await notifyUnsavedProduct(
+            req.app.get("io"),
+            savedProduct.product.store.ownerId,
+            userName,
+            savedProduct.product.name
+          );
+        } catch (error) {
+          console.error(`Failed to notify owner ${savedProduct.product.store.ownerId}:`, error);
+        }
+      });
+
+    // Send notifications in background
+    Promise.all(notificationPromises).catch(err => 
+      console.error("Error sending bulk unsave notifications:", err)
+    );
 
     return res.status(200).json({
       success: true,

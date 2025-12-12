@@ -22,7 +22,7 @@ const httpServer = createServer(app);
 // ✅ Setup Socket.io
 const io = new Server(httpServer, {
   cors: {
-    origin: "*", // replace with your frontend URL in production
+    origin: ["http://localhost:3001", "https://venyers.vercel.app/" ], // replace with your frontend URL in production
     methods: ["GET", "POST"],
   },
 });
